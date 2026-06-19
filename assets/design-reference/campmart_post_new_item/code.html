@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Post New Item | CampMart</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700;800&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#f0f0f3",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#9af6b8",
+                        "on-secondary-fixed-variant": "#00522d",
+                        "surface-container-high": "#e8e8ea",
+                        "secondary-fixed-dim": "#7ed99e",
+                        "on-primary-fixed-variant": "#00419e",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#0047ab",
+                        "outline-variant": "#c3c6d5",
+                        "on-error": "#ffffff",
+                        "surface-container": "#eeeef0",
+                        "error": "#ba1a1a",
+                        "background": "#f9f9fc",
+                        "surface-tint": "#2559bd",
+                        "secondary-container": "#97f3b5",
+                        "surface": "#f9f9fc",
+                        "on-primary-fixed": "#001946",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#4a4e4e",
+                        "on-background": "#1a1c1e",
+                        "primary": "#00327d",
+                        "secondary": "#006d3d",
+                        "on-secondary-container": "#047240",
+                        "tertiary-fixed": "#e0e3e2",
+                        "tertiary": "#333737",
+                        "on-tertiary-fixed": "#181c1c",
+                        "on-secondary-fixed": "#00210f",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "on-surface": "#1a1c1e",
+                        "surface-variant": "#e2e2e5",
+                        "inverse-primary": "#b1c5ff",
+                        "surface-container-low": "#f3f3f6",
+                        "primary-fixed": "#dae2ff",
+                        "on-tertiary-fixed-variant": "#434847",
+                        "tertiary-fixed-dim": "#c4c7c6",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2f3133",
+                        "on-surface-variant": "#434653",
+                        "on-tertiary-container": "#bcbfbe",
+                        "surface-bright": "#f9f9fc",
+                        "on-primary-container": "#a5bdff",
+                        "surface-dim": "#dadadc",
+                        "surface-container-highest": "#e2e2e5",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "outline": "#737784"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "stack-md": "16px",
+                        "margin-desktop": "40px",
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "base": "4px",
+                        "stack-sm": "8px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Geist"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-active { @apply text-primary border-primary; }
+        .step-inactive { @apply text-on-surface-variant border-outline; }
+        .glass-sidebar { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
+        .custom-radio:checked + label { @apply border-primary bg-primary-fixed text-primary; }
+        
+        /* Smooth transitions for multi-step */
+        .step-content { transition: opacity 0.3s ease, transform 0.3s ease; }
+        .hidden-step { display: none; opacity: 0; transform: translateY(10px); }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface sticky top-0 z-50 border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<img alt="CampMart Logo" class="w-10 h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP6oo6cjtc5zDauKciu2w3b7Z0UUwI763LI-zLlGJ4V99BbRaBuh0knxXrQ6fRtVVO-K0CaTv7OSh3CkO4D2vnaaS8iJjsDMT3s9h9MlXpBHgb-xDh4eKcP_a8DM4x0-QnmjCzDSeNLPy7HIhPudHbVrupwriHtuLN2jBTvqiWIzErbXo47O47rynKfEmw4V-UmC4A8tT-2NOiYbR5cWcmsUBhgFAb2-EdPHn7Q60gnD6-hjfTlfEA8saDIWfFu_UHsRncZFCq6sk"/>
+<span class="font-headline-md text-headline-md font-bold text-primary">CampMart</span>
+</div>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Marketplace</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Rentals</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-body-md" href="#">Sell</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">chat</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">
+                    JD
+                </div>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-desktop py-stack-lg flex flex-col md:flex-row gap-gutter">
+<!-- Left Side: Form Container -->
+<div class="flex-1 max-w-4xl">
+<!-- Progress Stepper -->
+<div class="mb-10 bg-surface-container-lowest p-stack-md rounded-xl border border-outline-variant flex justify-between items-center relative">
+<div class="absolute h-0.5 bg-outline-variant left-16 right-16 top-1/2 -translate-y-1/2 -z-10"></div>
+<div class="flex flex-col items-center gap-2 bg-surface-container-lowest px-4 z-10" id="step-indicator-1">
+<div class="w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold step-active bg-surface" id="bubble-1">1</div>
+<span class="font-label-md text-label-md step-active" id="label-1">Details</span>
+</div>
+<div class="flex flex-col items-center gap-2 bg-surface-container-lowest px-4 z-10" id="step-indicator-2">
+<div class="w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold step-inactive bg-surface" id="bubble-2">2</div>
+<span class="font-label-md text-label-md step-inactive" id="label-2">Photos</span>
+</div>
+<div class="flex flex-col items-center gap-2 bg-surface-container-lowest px-4 z-10" id="step-indicator-3">
+<div class="w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold step-inactive bg-surface" id="bubble-3">3</div>
+<span class="font-label-md text-label-md step-inactive" id="label-3">Pricing</span>
+</div>
+</div>
+<!-- Form Content -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-stack-lg shadow-sm">
+<!-- Step 1: Basic Info -->
+<section class="step-content" id="step-1">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-stack-md">Item Details</h2>
+<div class="space-y-stack-md">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Listing Title</label>
+<input class="w-full p-4 rounded-lg border border-outline bg-surface-bright focus:ring-2 focus:ring-primary focus:outline-none transition-all" placeholder="e.g., Organic Chemistry 2nd Edition Textbook" type="text"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Category</label>
+<select class="w-full p-4 rounded-lg border border-outline bg-surface-bright focus:ring-2 focus:ring-primary focus:outline-none appearance-none">
+<option>Select Category</option>
+<option>Textbooks</option>
+<option>Electronics</option>
+<option>Furniture</option>
+<option>Lab Gear</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Department</label>
+<select class="w-full p-4 rounded-lg border border-outline bg-surface-bright focus:ring-2 focus:ring-primary focus:outline-none">
+<option>General</option>
+<option>Science &amp; Tech</option>
+<option>Arts &amp; Design</option>
+<option>Business</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-4 pt-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Condition</label>
+<div class="grid grid-cols-3 gap-stack-md">
+<div class="relative">
+<input checked="" class="hidden custom-radio" id="cond-new" name="condition" type="radio"/>
+<label class="flex flex-col items-center justify-center p-4 border border-outline rounded-lg cursor-pointer hover:border-primary transition-all" for="cond-new">
+<span class="font-label-md">New</span>
+</label>
+</div>
+<div class="relative">
+<input class="hidden custom-radio" id="cond-like-new" name="condition" type="radio"/>
+<label class="flex flex-col items-center justify-center p-4 border border-outline rounded-lg cursor-pointer hover:border-primary transition-all" for="cond-like-new">
+<span class="font-label-md">Like New</span>
+</label>
+</div>
+<div class="relative">
+<input class="hidden custom-radio" id="cond-fair" name="condition" type="radio"/>
+<label class="flex flex-col items-center justify-center p-4 border border-outline rounded-lg cursor-pointer hover:border-primary transition-all" for="cond-fair">
+<span class="font-label-md">Fair</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Step 2: Photo Upload (Hidden by Default) -->
+<section class="step-content hidden-step" id="step-2">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-stack-md">Add Photos</h2>
+<p class="font-body-md text-on-surface-variant mb-stack-lg">High-quality photos increase your chances of a quick sale by 40%.</p>
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-12 flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-variant transition-colors cursor-pointer group">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-primary-container text-4xl">add_a_photo</span>
+</div>
+<p class="font-headline-md text-headline-md text-on-surface mb-1">Drag and drop images</p>
+<p class="font-body-md text-on-surface-variant">or click to browse from your device</p>
+<p class="mt-8 text-label-sm font-label-sm text-outline">Supported formats: JPG, PNG, HEIC (Max 10MB)</p>
+</div>
+<div class="mt-stack-lg grid grid-cols-4 gap-4">
+<!-- Placeholder for uploaded previews -->
+<div class="aspect-square rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center text-outline">
+<span class="material-symbols-outlined">image</span>
+</div>
+<div class="aspect-square rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center text-outline">
+<span class="material-symbols-outlined">image</span>
+</div>
+</div>
+</section>
+<!-- Step 3: Pricing (Hidden by Default) -->
+<section class="step-content hidden-step" id="step-3">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-stack-md">Set Your Price</h2>
+<div class="space-y-stack-lg">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Your Price (₹)</label>
+<input class="w-full text-4xl font-headline-lg p-6 rounded-lg border border-outline bg-surface-bright focus:ring-2 focus:ring-primary focus:outline-none" id="price-input" placeholder="0.00" type="number"/>
+</div>
+<!-- Smart Price Badge -->
+<div class="bg-secondary-container/30 border border-secondary-container p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<div>
+<p class="font-label-md text-secondary">Smart Price Insight</p>
+<p class="font-body-md text-on-secondary-container">Suggested: <span class="font-bold">₹ 450</span> based on market demand</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-4 border border-outline-variant rounded-lg bg-surface-container">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Estimated Earnings</p>
+<p class="font-headline-md text-headline-md text-primary">₹ 427.50</p>
+<p class="text-[10px] text-outline mt-1">Includes 5% service fee</p>
+</div>
+<div class="p-4 border border-outline-variant rounded-lg bg-surface-container">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Market Speed</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-secondary text-sm">bolt</span>
+<p class="font-headline-md text-headline-md text-secondary">Very High</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Navigation Buttons -->
+<div class="mt-stack-lg flex justify-between items-center pt-stack-lg border-t border-outline-variant">
+<button class="px-8 py-3 rounded-lg border border-primary text-primary font-label-md hover:bg-primary-container/10 transition-colors opacity-0 pointer-events-none" id="prev-btn">
+                        Back
+                    </button>
+<button class="px-10 py-4 rounded-lg bg-primary text-on-primary font-label-md font-bold hover:opacity-90 shadow-lg transition-all active:scale-95" id="next-btn" onclick="nextStep()">
+                        Continue
+                    </button>
+<button class="hidden px-10 py-4 rounded-lg bg-secondary text-on-secondary font-label-md font-bold hover:opacity-90 shadow-lg transition-all active:scale-95" id="submit-btn">
+                        Post Listing
+                    </button>
+</div>
+</div>
+</div>
+<!-- Right Side: Sidebar Tips -->
+<aside class="w-full md:w-80 space-y-stack-md">
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-stack-md glass-sidebar">
+<div class="flex items-center gap-2 mb-4 text-primary">
+<span class="material-symbols-outlined">lightbulb</span>
+<h3 class="font-headline-md text-label-md">Listing Tips</h3>
+</div>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-xs text-on-secondary-fixed-variant" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<p class="text-label-md text-on-surface-variant leading-tight">Take photos in natural daylight for better clarity.</p>
+</li>
+<li class="flex gap-3">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-xs text-on-secondary-fixed-variant" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<p class="text-label-md text-on-surface-variant leading-tight">Mention if textbooks have highlights or missing pages.</p>
+</li>
+<li class="flex gap-3">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-xs text-on-secondary-fixed-variant" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<p class="text-label-md text-on-surface-variant leading-tight">State your preferred campus meeting spot for handovers.</p>
+</li>
+</ul>
+</div>
+<div class="bg-primary-container text-on-primary-container rounded-xl p-stack-md">
+<p class="font-label-md mb-2">Student Guarantee</p>
+<p class="text-xs opacity-90 leading-relaxed">All transactions on CampMart are protected. We verify every seller against the university directory to ensure a safe exchange environment.</p>
+<div class="mt-4 flex items-center gap-2 bg-white/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span class="text-[10px] font-bold tracking-widest uppercase">Verified Campus Seller</span>
+</div>
+</div>
+<div class="relative overflow-hidden rounded-xl border border-outline-variant h-48 group">
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A clean, vibrant digital photograph of a group of diverse university students laughing and exchanging textbooks on a sunny campus lawn. The lighting is warm and golden-hour inspired, with a focus on modern student life. The overall aesthetic is high-contrast and professional, aligning with a high-trust campus marketplace app like CampMart." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDzUhQPp2QTU0wYN8Fd3IbqptNX-eLUkEScDuqnbAA3WpUrioJRemnJs4msCdW9szdiu0_4xY7EhlSBR2Wru1W6TOPxCAhCg7MNZtQCLr_LHETRPuhHoMZAkJ8FBdGnP2rgJ7rfte1kLgu95KWTq7XMBi3hCJw65rsC_7QwbKw7A4IV8Oq75zs9p_BdNAUxJx10jBCRXX3SWXLU5bhQutsDT3iCzqLxbFdU678DTpSaWlklzf4bh9n2VFwwRPBGrIwqlYOLp70Av9A')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4">
+<p class="text-white font-bold text-label-md">Join 5,000+ Campus Sellers</p>
+<p class="text-white/70 text-[10px]">Start turning your old gear into cash.</p>
+</div>
+</div>
+</aside>
+</main>
+<footer class="mt-stack-lg border-t border-outline-variant py-stack-lg">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-2">
+<img alt="Logo" class="w-6 h-6 opacity-50 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP6oo6cjtc5zDauKciu2w3b7Z0UUwI763LI-zLlGJ4V99BbRaBuh0knxXrQ6fRtVVO-K0CaTv7OSh3CkO4D2vnaaS8iJjsDMT3s9h9MlXpBHgb-xDh4eKcP_a8DM4x0-QnmjCzDSeNLPy7HIhPudHbVrupwriHtuLN2jBTvqiWIzErbXo47O47rynKfEmw4V-UmC4A8tT-2NOiYbR5cWcmsUBhgFAb2-EdPHn7Q60gnD6-hjfTlfEA8saDIWfFu_UHsRncZFCq6sk"/>
+<p class="text-outline font-label-sm">© 2024 CampMart Inc. University Campus Grounds.</p>
+</div>
+<div class="flex gap-6">
+<a class="text-outline hover:text-primary font-label-sm" href="#">Help Center</a>
+<a class="text-outline hover:text-primary font-label-sm" href="#">Privacy Policy</a>
+<a class="text-outline hover:text-primary font-label-sm" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+<script>
+        let currentStep = 1;
+
+        function updateUI() {
+            // Update steps visibility
+            document.querySelectorAll('.step-content').forEach(step => step.classList.add('hidden-step'));
+            document.getElementById(`step-${currentStep}`).classList.remove('hidden-step');
+
+            // Update indicators
+            for (let i = 1; i <= 3; i++) {
+                const bubble = document.getElementById(`bubble-${i}`);
+                const label = document.getElementById(`label-${i}`);
+                
+                if (i < currentStep) {
+                    bubble.innerHTML = '<span class="material-symbols-outlined text-sm">check</span>';
+                    bubble.className = "w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold bg-primary text-on-primary border-primary";
+                    label.className = "font-label-md text-label-md text-primary";
+                } else if (i === currentStep) {
+                    bubble.innerHTML = i;
+                    bubble.className = "w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold step-active bg-surface border-primary";
+                    label.className = "font-label-md text-label-md step-active";
+                } else {
+                    bubble.innerHTML = i;
+                    bubble.className = "w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold step-inactive bg-surface border-outline";
+                    label.className = "font-label-md text-label-md step-inactive";
+                }
+            }
+
+            // Update buttons
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (currentStep === 1) {
+                prevBtn.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                prevBtn.classList.remove('opacity-0', 'pointer-events-none');
+                prevBtn.onclick = prevStep;
+            }
+
+            if (currentStep === 3) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < 3) {
+                currentStep++;
+                updateUI();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI();
+            }
+        }
+
+        // Initialize
+        updateUI();
+    </script>
+</body></html>

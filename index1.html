@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampMart – Smart Campus Marketplace</title>
+<style>
+  :root {
+    --bg: #0a0c14;
+    --bg2: #111420;
+    --surface: #161926;
+    --surface2: #1e2235;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0f2f8;
+    --muted: #8b91a8;
+    --accent: #6366f1;
+    --accent2: #818cf8;
+    --accent-glow: rgba(99,102,241,0.18);
+    --green: #10b981;
+    --green-bg: rgba(16,185,129,0.12);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  [data-theme="light"] {
+    --bg: #f4f5f9;
+    --bg2: #eef0f6;
+    --surface: #ffffff;
+    --surface2: #f7f8fc;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.13);
+    --text: #1a1d2e;
+    --muted: #6b7280;
+    --accent: #4f46e5;
+    --accent2: #6366f1;
+    --accent-glow: rgba(99,102,241,0.10);
+    --green: #059669;
+    --green-bg: rgba(5,150,105,0.09);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar { position: sticky; top: 0; z-index: 200; height: 64px; display: flex; align-items: center; padding: 0 32px; background: rgba(10,12,20,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] .topbar { background: rgba(255,255,255,0.88); }
+  .logo-wrap { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg,#6366f1,#818cf8); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.85rem; color: #fff; letter-spacing: -0.5px; }
+  .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .logo-text strong { font-size: 0.95rem; font-weight: 800; color: var(--text); }
+  .logo-text span { font-size: 0.7rem; color: var(--muted); }
+  .nav-links { display: flex; gap: 6px; align-items: center; }
+  .nav-links a { padding: 7px 14px; border-radius: 8px; font-size: 0.85rem; color: var(--muted); text-decoration: none; cursor: pointer; border: none; background: none; transition: all .15s; font-weight: 500; }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--surface2); }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .theme-btn { background: none; border: 1px solid var(--border2); border-radius: 8px; padding: 6px 10px; cursor: pointer; color: var(--muted); font-size: 1rem; transition: all .15s; }
+  .theme-btn:hover { border-color: var(--accent2); color: var(--text); }
+  .verified-badge { padding: 6px 14px; border-radius: 8px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: var(--accent2); font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .verified-badge:hover { background: rgba(99,102,241,0.25); }
+  .avatar-btn { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,#6366f1,#a78bfa); border: none; color: #fff; font-weight: 800; font-size: 0.8rem; cursor: pointer; }
+  .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text); }
+
+  /* LAYOUT */
+  .app-shell { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 64px); }
+  .sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 20px 0; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 64px; height: calc(100vh - 64px); overflow-y: auto; }
+  .sidebar a { display: flex; align-items: center; gap: 10px; padding: 10px 18px; color: var(--muted); text-decoration: none; font-size: 0.86rem; transition: all .15s; cursor: pointer; border: none; background: none; width: 100%; text-align: left; font-weight: 500; border-radius: 0; }
+  .sidebar a:hover, .sidebar a.active { color: var(--text); background: var(--surface2); }
+  .sidebar a.active { color: var(--accent2); border-right: 2px solid var(--accent); }
+  .sidebar-profile { padding: 16px; border-top: 1px solid var(--border); margin-top: auto; }
+  .sidebar-profile strong { display: block; font-size: 0.86rem; color: var(--text); }
+  .sidebar-profile span { font-size: 0.74rem; color: var(--muted); }
+  .main-content { overflow-y: auto; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* HERO */
+  .hero-section { min-height: calc(100vh - 64px); background: radial-gradient(ellipse 80% 60% at 60% -10%, rgba(99,102,241,0.28) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 80% 60%, rgba(167,139,250,0.12) 0%, transparent 60%), var(--bg); display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 60px 64px; gap: 48px; }
+  .hero-left { display: flex; flex-direction: column; gap: 24px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); border-radius: 100px; font-size: 0.74rem; font-weight: 700; color: var(--accent2); letter-spacing: 0.5px; text-transform: uppercase; width: fit-content; }
+  .hero-badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
+  .hero-title { font-size: clamp(2.4rem, 4.5vw, 3.4rem); font-weight: 900; line-height: 1.1; letter-spacing: -1.5px; color: var(--text); }
+  .hero-title em { font-style: normal; background: linear-gradient(135deg, #818cf8, #c4b5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-subtitle { font-size: 1rem; color: var(--muted); max-width: 460px; line-height: 1.7; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { padding: 13px 28px; border-radius: 12px; background: linear-gradient(135deg,#6366f1,#818cf8); color: #fff; border: none; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all .18s; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(99,102,241,0.35); }
+  .btn-outline { padding: 13px 28px; border-radius: 12px; background: transparent; color: var(--text); border: 1px solid var(--border2); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all .18s; }
+  .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); background: var(--accent-glow); }
+  .hero-stats { display: flex; gap: 32px; margin-top: 8px; }
+  .hero-stat strong { display: block; font-size: 1.6rem; font-weight: 900; color: var(--text); }
+  .hero-stat span { font-size: 0.76rem; color: var(--muted); }
+
+  /* FLOATING CARDS */
+  .hero-right { position: relative; display: flex; align-items: center; justify-content: center; }
+  .float-card { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 16px 18px; position: absolute; box-shadow: 0 20px 60px rgba(0,0,0,0.4); min-width: 220px; animation: float 6s ease-in-out infinite; }
+  .float-card:nth-child(1) { top: 60px; right: 0; animation-delay: 0s; }
+  .float-card:nth-child(2) { bottom: 80px; right: 30px; animation-delay: 2s; }
+  .float-card:nth-child(3) { top: 55%; left: -30px; animation-delay: 4s; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .float-card-title { font-size: 0.7rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .float-main { display: flex; align-items: center; gap: 12px; }
+  .float-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--accent-glow); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .float-info strong { font-size: 0.9rem; font-weight: 700; display: block; }
+  .float-info span { font-size: 0.75rem; color: var(--muted); }
+  .float-price { font-size: 1.5rem; font-weight: 900; color: var(--text); margin: 8px 0 4px; }
+  .deal-badge { display: inline-block; padding: 3px 10px; background: var(--green-bg); color: var(--green); border-radius: 100px; font-size: 0.73rem; font-weight: 700; }
+  .progress-bar { height: 4px; background: var(--surface2); border-radius: 4px; margin-top: 10px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg,var(--accent),var(--accent2)); border-radius: 4px; }
+  .float-small { display: flex; align-items: center; gap: 10px; }
+  .float-small-icon { width: 30px; height: 30px; border-radius: 8px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+  .hero-mockup { width: 100%; max-width: 340px; height: 440px; position: relative; }
+  .hero-illustration { width: 100%; height: 100%; background: linear-gradient(135deg,rgba(99,102,241,0.07),rgba(167,139,250,0.04)); border-radius: 24px; border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 6rem; position: relative; overflow: hidden; }
+  .hero-illustration::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at 70% 30%, rgba(99,102,241,0.15), transparent 70%); }
+
+  /* QUICK BROWSE */
+  .section-wrap { padding: 32px; }
+  .section-title { font-size: 1rem; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+  .quick-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .quick-btn { padding: 10px 18px; border-radius: 20px; border: 1px solid var(--border2); background: var(--surface); font-size: 0.84rem; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px; font-weight: 500; color: var(--text); }
+  .quick-btn:hover { border-color: var(--accent2); color: var(--accent2); background: var(--accent-glow); }
+
+  /* MARKETPLACE */
+  .mp-wrap { padding: 24px; }
+  .filter-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .search-row { display: flex; gap: 10px; }
+  .search-input { flex: 1; padding: 11px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg2); color: var(--text); font-size: 0.88rem; outline: none; }
+  .search-input:focus { border-color: var(--accent); }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border2); background: var(--surface); color: var(--muted); font-size: 0.8rem; cursor: pointer; transition: all .15s; font-weight: 500; }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .budget-row { display: flex; align-items: center; gap: 12px; font-size: 0.84rem; color: var(--muted); }
+  .budget-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+  .listing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+
+  /* CARDS */
+  .listing-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all .2s; cursor: pointer; }
+  .listing-card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+  .listing-image { height: 140px; background: var(--surface2); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .listing-emoji { font-size: 3rem; }
+  .listing-tag { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: #fff; border-radius: 20px; padding: 3px 10px; font-size: 0.72rem; font-weight: 700; }
+  .listing-save { position: absolute; top: 8px; right: 10px; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; width: 32px; height: 32px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .18s; color: var(--muted); }
+  .listing-save:hover, .listing-save.saved { color: #f87171; background: rgba(248,113,113,0.15); }
+  .listing-body { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .listing-title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .listing-title-row h3 { font-size: 0.9rem; font-weight: 700; line-height: 1.3; color: var(--text); }
+  .listing-price { font-weight: 800; color: var(--accent2); white-space: nowrap; font-size: 0.92rem; }
+  .listing-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .meta-pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 0.74rem; color: var(--muted); }
+  .good-pill { background: rgba(16,185,129,0.12); color: #34d399; border-radius: 20px; padding: 3px 10px; font-size: 0.74rem; font-weight: 700; }
+  .warning-pill { background: rgba(251,191,36,0.12); color: #fbbf24; border-radius: 20px; padding: 3px 10px; font-size: 0.74rem; font-weight: 700; }
+  .neutral-pill { background: var(--surface2); color: var(--muted); border-radius: 20px; padding: 3px 10px; font-size: 0.74rem; font-weight: 700; }
+  .card-actions { display: flex; gap: 8px; margin-top: 4px; }
+  .card-actions button { flex: 1; padding: 8px; font-size: 0.81rem; border-radius: 9px; cursor: pointer; transition: all .15s; font-weight: 600; border: 1px solid var(--border2); }
+  .btn-details { background: var(--surface2); color: var(--text); }
+  .btn-details:hover { border-color: var(--accent2); color: var(--accent2); }
+  .btn-msg { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-msg:hover { opacity: .85; }
+
+  /* DETAILS */
+  .details-wrap { padding: 24px; }
+  .details-grid { display: grid; grid-template-columns: 1fr 380px; gap: 24px; margin-top: 18px; }
+  @media (max-width: 900px) { .details-grid { grid-template-columns: 1fr; } }
+  .details-gallery { background: var(--surface2); border-radius: var(--radius); min-height: 300px; display: flex; align-items: center; justify-content: center; font-size: 5rem; border: 1px solid var(--border); }
+  .details-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .eyebrow { font-size: 0.72rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .details-title h2 { font-size: 1.3rem; font-weight: 800; margin-top: 4px; }
+  .price-row { display: flex; align-items: center; gap: 12px; }
+  .price-row strong { font-size: 1.5rem; font-weight: 900; color: var(--accent2); }
+  .seller-card { display: flex; gap: 12px; align-items: flex-start; background: var(--surface2); border-radius: 12px; padding: 14px; }
+  .avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg,var(--accent),#a78bfa); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.88rem; flex-shrink: 0; }
+  .seller-card div { display: flex; flex-direction: column; gap: 2px; font-size: 0.8rem; color: var(--muted); }
+  .seller-card strong { color: var(--text); }
+  .price-analysis { background: var(--surface2); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .analysis-row { display: flex; justify-content: space-between; font-size: 0.82rem; }
+  .analysis-row span { color: var(--muted); }
+  .details-actions { display: flex; flex-direction: column; gap: 8px; }
+  .buy-button { background: linear-gradient(135deg,var(--green),#059669); color: #fff; border: none; padding: 13px 20px; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; width: 100%; transition: all .18s; }
+  .buy-button:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(16,185,129,0.3); }
+  .secondary-button { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); padding: 11px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; cursor: pointer; width: 100%; transition: all .15s; }
+  .secondary-button:hover { border-color: var(--accent2); color: var(--accent2); }
+  .ghost-button { background: none; border: 1px solid var(--border2); color: var(--muted); padding: 10px 16px; border-radius: 10px; font-size: 0.84rem; cursor: pointer; transition: all .15s; }
+  .ghost-button:hover { border-color: var(--accent2); color: var(--accent2); }
+  .spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-top: 24px; }
+  .spec-grid div { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+  .spec-grid span { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 4px; }
+  .spec-grid strong { font-size: 0.88rem; font-weight: 700; }
+
+  /* SELL */
+  .sell-wrap { padding: 24px; }
+  .sell-layout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+  @media (max-width: 900px) { .sell-layout { grid-template-columns: 1fr; } }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+  .form-step { display: none; }
+  .form-step.active { display: block; }
+  .form-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .form-field label { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+  .form-field input, .form-field select, .form-field textarea { padding: 10px 14px; border: 1px solid var(--border2); border-radius: 10px; background: var(--bg2); color: var(--text); font-size: 0.88rem; outline: none; font-family: inherit; width: 100%; }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--accent); }
+  .step-nav { display: flex; gap: 10px; margin-top: 8px; }
+  .preview-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .preview-art { height: 140px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+  .preview-body { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .upload-zone { border: 2px dashed var(--border2); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all .2s; }
+  .upload-zone:hover, .upload-zone.added { border-color: var(--accent); background: var(--accent-glow); }
+  .photo-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  /* CHAT */
+  .chat-wrap { padding: 24px; }
+  .chat-layout { display: grid; grid-template-columns: 260px 1fr; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; min-height: 500px; background: var(--surface); }
+  @media (max-width: 700px) { .chat-layout { grid-template-columns: 1fr; } .conversation-list { display: none; } }
+  .conversation-list { border-right: 1px solid var(--border); overflow-y: auto; }
+  .conversation-item { padding: 14px; display: flex; gap: 10px; align-items: center; cursor: pointer; border-bottom: 1px solid var(--border); transition: background .15s; }
+  .conversation-item:hover, .conversation-item.active { background: var(--surface2); }
+  .conversation-item strong { font-size: 0.83rem; display: block; color: var(--text); }
+  .conversation-item span { font-size: 0.75rem; color: var(--muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+  .chat-main { display: flex; flex-direction: column; }
+  .chat-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .chat-header div { display: flex; flex-direction: column; gap: 2px; }
+  .chat-header strong { font-size: 0.88rem; }
+  .chat-header span { font-size: 0.76rem; color: var(--muted); }
+  .messages { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; min-height: 260px; max-height: 380px; }
+  .message { max-width: 75%; padding: 10px 14px; border-radius: 14px; font-size: 0.86rem; line-height: 1.5; }
+  .message.me { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .message.them { background: var(--surface2); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; color: var(--text); }
+  .quick-replies { padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px; border-top: 1px solid var(--border); }
+  .quick-replies button { font-size: 0.76rem; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border2); background: var(--surface2); color: var(--muted); cursor: pointer; transition: all .15s; }
+  .quick-replies button:hover { border-color: var(--accent2); color: var(--accent2); }
+  .message-form { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--border); }
+  .message-form input { flex: 1; padding: 10px 14px; border: 1px solid var(--border2); border-radius: 10px; background: var(--bg2); color: var(--text); font-size: 0.86rem; outline: none; }
+  .message-form input:focus { border-color: var(--accent); }
+
+  /* DASHBOARD */
+  .dash-wrap { padding: 24px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; }
+  .stat-num { font-size: 2rem; font-weight: 900; color: var(--accent2); }
+  .stat-label { font-size: 0.76rem; color: var(--muted); margin-top: 4px; }
+  .my-listing-row { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .my-listing-row:last-child { border-bottom: none; }
+  .my-listing-row div { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .my-listing-row div strong { font-size: 0.86rem; color: var(--text); }
+  .my-listing-row div span { font-size: 0.75rem; color: var(--muted); }
+  .row-price { font-weight: 700; color: var(--accent2); font-size: 0.88rem; white-space: nowrap; }
+  .item-icon { font-size: 1.8rem; width: 44px; text-align: center; flex-shrink: 0; }
+  .txn-row { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .txn-row:last-child { border-bottom: none; }
+  .txn-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .txn-info strong { font-size: 0.88rem; color: var(--text); }
+  .txn-meta { font-size: 0.76rem; color: var(--muted); }
+  .txn-buyer { font-size: 0.8rem; color: var(--text); margin-top: 4px; background: var(--surface2); border-radius: 8px; padding: 8px 10px; border: 1px solid var(--border); }
+  .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
+  .status-pending { background: rgba(251,191,36,0.12); color: #fbbf24; }
+  .status-confirmed { background: rgba(16,185,129,0.12); color: #34d399; }
+
+  /* REC */
+  .rec-wrap { padding: 24px; }
+  .rec-card { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; transition: all .15s; }
+  .rec-card:hover { border-color: var(--border2); }
+  .rec-card h3 { font-size: 0.92rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+  .rec-card p { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
+  .rec-actions { display: flex; gap: 8px; }
+  .rec-actions button { padding: 7px 16px; font-size: 0.8rem; border-radius: 8px; cursor: pointer; transition: all .15s; font-weight: 600; }
+
+  /* MODAL */
+  .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
+  .modal-backdrop.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--border); }
+  .modal-header h3 { font-size: 0.98rem; font-weight: 700; }
+  .modal-body { padding: 20px; }
+  .modal-footer { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+  .meetup-option { display: flex; justify-content: space-between; align-items: center; padding: 14px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; margin-bottom: 10px; transition: all .15s; }
+  .meetup-option:hover, .meetup-option.active { border-color: var(--accent); background: var(--accent-glow); }
+
+  /* TOAST */
+  #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--surface2); color: var(--text); border: 1px solid var(--border2); padding: 12px 24px; border-radius: 30px; font-size: 0.86rem; z-index: 1000; transition: transform .3s cubic-bezier(.34,1.56,.64,1); pointer-events: none; white-space: nowrap; }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* PAGE TITLE */
+  .page-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 18px; }
+
+  /* MOBILE */
+  .mobile-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; }
+  .mobile-menu.open { display: block; }
+  .mobile-menu-inner { background: var(--surface); width: 260px; height: 100%; padding: 20px 0; display: flex; flex-direction: column; gap: 2px; }
+  @media (max-width: 768px) {
+    .app-shell { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .mobile-menu-btn { display: block; }
+    .hero-section { grid-template-columns: 1fr; padding: 40px 24px; min-height: auto; }
+    .hero-right { display: none; }
+    .nav-links { display: none; }
+  }
+  .full { width: 100%; }
+  .empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
+  .empty-state span { font-size: 3rem; display: block; margin-bottom: 12px; }
+  .empty-state h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .section-title { font-size: 0.98rem; font-weight: 700; margin-bottom: 14px; }
+
+  .reveal { animation: fadeUp .4s ease both; }
+  .delay-1 { animation-delay: .08s; }
+  .delay-2 { animation-delay: .16s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+  <div class="logo-wrap">
+    <div class="logo-icon">CM</div>
+    <div class="logo-text">
+      <strong>CampMart</strong>
+      <span>Smart Campus Exchange</span>
+    </div>
+  </div>
+  <nav class="nav-links">
+    <a data-route="marketplace">Marketplace</a>
+    <a data-route="recommendations">AI Picks</a>
+    <a data-route="sell">Sell/Rent</a>
+    <a data-route="chat">Chat</a>
+    <a data-route="dashboard">Dashboard</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="theme-btn" id="themeToggle">☀️</button>
+    <button class="verified-badge" id="loginBtn">Verified ✓</button>
+    <button class="avatar-btn" id="avatarBtn">YJ</button>
+  </div>
+</header>
+
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <a data-route="home">🏠 Home</a>
+    <a data-route="marketplace">🛒 Marketplace</a>
+    <a data-route="recommendations">✨ Recommendations</a>
+    <a data-route="sell">➕ Post Listing</a>
+    <a data-route="chat">💬 Messages</a>
+    <a data-route="dashboard">📊 Dashboard</a>
+    <div class="sidebar-profile">
+      <strong id="sidebarName">Guest Student</strong>
+      <span id="sidebarStatus">Not verified</span>
+      <button class="ghost-button full" style="margin-top:8px;font-size:0.76rem" id="verifyBtn">Verify Student</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- HOME -->
+    <div class="view active" id="homeView">
+      <section class="hero-section">
+        <div class="hero-left reveal">
+          <div class="hero-badge">Verified student-only campus marketplace</div>
+          <h1 class="hero-title">Buy, sell, rent and<br>exchange campus<br>resources with <em>trust.</em></h1>
+          <p class="hero-subtitle">CampMart helps students safely trade books, gadgets, notes, lab tools and daily essentials inside their verified campus community, with AI-powered recommendations, fair price prediction and secure meetup chat.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" data-route="marketplace">Browse Marketplace</button>
+            <button class="btn-outline" data-route="sell">Post Item</button>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><strong>200+</strong><span>Listings</span></div>
+            <div class="hero-stat"><strong>98%</strong><span>Verified</span></div>
+            <div class="hero-stat"><strong>AI</strong><span>Pricing</span></div>
+            <div class="hero-stat"><strong>Safe</strong><span>Meetups</span></div>
+          </div>
+        </div>
+        <div class="hero-right reveal delay-1">
+          <div class="hero-mockup">
+            <div class="hero-illustration" style="font-size:4rem">🎓</div>
+            <!-- Float Card 1: AI Fair Price -->
+            <div class="float-card" style="top:30px;right:-20px;min-width:200px">
+              <div class="float-card-title">AI Fair Price</div>
+              <div class="float-main">
+                <div class="float-icon">💻</div>
+                <div class="float-info">
+                  <strong>MacBook Air M1</strong>
+                  <span>Market range ₹45k–₹52k</span>
+                </div>
+              </div>
+              <div class="float-price">₹46,000</div>
+              <span class="deal-badge">Great Deal</span>
+              <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+            </div>
+            <!-- Float Card 2: Seller -->
+            <div class="float-card" style="bottom:40px;right:10px;min-width:180px">
+              <div class="float-small">
+                <div class="float-small-icon">🎧</div>
+                <div>
+                  <strong style="font-size:0.82rem;display:block">Headphones</strong>
+                  <span style="font-size:0.72rem;color:var(--muted)">Verified seller</span>
+                </div>
+              </div>
+            </div>
+            <!-- Float Card 3: Rent -->
+            <div class="float-card" style="top:48%;left:-40px;min-width:170px">
+              <div class="float-small">
+                <div class="float-small-icon">📝</div>
+                <div>
+                  <strong style="font-size:0.82rem;display:block">DSA Notes</strong>
+                  <span style="font-size:0.72rem;color:var(--muted)">Rent ₹49/day</span>
+                </div>
+              </div>
+            </div>
+            <!-- Float Action -->
+            <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;padding:10px 20px;border-radius:50px;font-size:0.78rem;font-weight:700;white-space:nowrap;box-shadow:0 4px 20px rgba(99,102,241,0.4)">
+              Meet at Library Gate?
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="section-wrap" style="padding-top:0">
+        <p class="section-title">Quick Browse</p>
+        <div class="quick-row">
+          <button class="quick-btn" data-fill="Notes">📝 Notes</button>
+          <button class="quick-btn" data-fill="Gadgets">💻 Gadgets</button>
+          <button class="quick-btn" data-fill="Books">📚 Books</button>
+          <button class="quick-btn" data-fill="Rent">🔑 Rent</button>
+          <button class="quick-btn" data-fill="Lab Tools">🔧 Lab Tools</button>
+          <button class="quick-btn" data-fill="Essentials">🎒 Essentials</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARKETPLACE -->
+    <div class="view" id="marketplaceView">
+      <div class="mp-wrap">
+        <div class="page-title">🛒 Campus Marketplace</div>
+        <div class="filter-bar">
+          <div class="search-row">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search items, notes, gadgets…">
+            <button class="ghost-button" id="resetFilters">Reset</button>
+          </div>
+          <div id="categoryFilters" class="chip-row"></div>
+          <div id="typeFilters" class="chip-row"></div>
+          <div class="budget-row">
+            <span>Budget: ₹<span id="budgetLabel">80,000</span></span>
+            <input type="range" id="budgetRange" min="0" max="80000" value="80000" step="500">
+          </div>
+        </div>
+        <div class="listing-grid" id="listingGrid"></div>
+      </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="view" id="detailsView">
+      <div class="details-wrap" id="detailsShell"></div>
+    </div>
+
+    <!-- RECOMMENDATIONS -->
+    <div class="view" id="recommendationsView">
+      <div class="rec-wrap">
+        <div class="page-title">✨ AI Recommendations</div>
+        <div class="panel" style="margin-bottom:16px">
+          <p style="font-size:0.86rem;color:var(--muted);margin-bottom:12px">Curated picks based on your branch, semester and campus trends.</p>
+          <button class="btn-primary" id="applySmartBundle">💼 Save Smart Bundle to Wishlist</button>
+        </div>
+        <div id="recommendationList"></div>
+      </div>
+    </div>
+
+    <!-- SELL -->
+    <div class="view" id="sellView">
+      <div class="sell-wrap">
+        <div class="page-title">➕ Post a Listing</div>
+        <div class="sell-layout">
+          <div>
+            <form id="postForm">
+              <div class="form-step active" data-step="1">
+                <p class="section-title">Step 1 — Item Details</p>
+                <div class="form-field"><label>Item Title *</label><input type="text" name="title" value="Engineering Graphics Mini Drafter" required></div>
+                <div class="form-field"><label>Category *</label><select name="category"><option>Books</option><option>Gadgets</option><option selected>Notes</option><option>Essentials</option><option>Lab Tools</option></select></div>
+                <div class="form-field"><label>Type *</label><select name="type"><option>Sell</option><option>Rent</option><option>Exchange</option></select></div>
+                <div class="form-field"><label>Condition *</label><select name="condition"><option>Like New</option><option>Good</option><option>Used</option><option>Heavily Used</option></select></div>
+                <div class="step-nav"><button type="button" class="btn-primary next-step">Next →</button></div>
+              </div>
+              <div class="form-step" data-step="2">
+                <p class="section-title">Step 2 — Price & Description</p>
+                <div class="form-field"><label>Price (₹) — leave 0 for Exchange</label><input type="number" name="price" value="850" min="0"></div>
+                <div class="form-field"><label>Description *</label><textarea name="description" rows="4" required>Used for only one semester. Smooth scale movement, clean board, perfect for first-year engineering drawing.</textarea></div>
+                <div class="form-field"><label>Preferred Meetup Point</label><select name="meetup"><option>Library Gate</option><option>Canteen Area</option><option>Main Campus Gate</option><option>CSE Department</option><option>Hostel Common Room</option></select></div>
+                <div class="step-nav"><button type="button" class="ghost-button prev-step">← Back</button><button type="button" class="btn-primary next-step">Next →</button></div>
+              </div>
+              <div class="form-step" data-step="3">
+                <p class="section-title">Step 3 — Photos & Publish</p>
+                <div class="upload-zone" id="mockUpload"><span>📷</span><strong>Upload Photos</strong><p>Click to select images (JPG, PNG, WebP)</p><input type="file" id="photoInput" accept="image/*" multiple style="display:none"></div>
+                <div class="photo-grid" id="photoPreviewGrid"></div>
+                <div class="step-nav" style="margin-top:16px"><button type="button" class="ghost-button prev-step">← Back</button><button type="submit" class="btn-primary">🚀 Publish Listing</button></div>
+              </div>
+            </form>
+          </div>
+          <div>
+            <p class="section-title">Live Preview</p>
+            <div id="livePreview"></div>
+            <div class="panel" style="margin-top:14px">
+              <p style="font-size:0.76rem;color:var(--muted);margin-bottom:6px">AI Price Analysis</p>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span id="predictedRange" style="font-weight:700;color:var(--accent2)">₹700 – ₹1,050</span>
+                <span id="dealSignal" class="warning-pill">Fair Price</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div class="view" id="chatView">
+      <div class="chat-wrap">
+        <div class="page-title">💬 Verified Chats</div>
+        <div class="chat-layout">
+          <div class="conversation-list" id="conversationList"></div>
+          <div class="chat-main">
+            <div class="chat-header" id="chatContext"></div>
+            <div class="messages" id="messages"></div>
+            <div class="quick-replies" id="quickReplies"></div>
+            <form class="message-form" id="messageForm">
+              <input type="text" id="messageInput" placeholder="Type a message…">
+              <button type="submit" class="btn-primary" style="padding:10px 18px;font-size:0.86rem">Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="view" id="dashboardView">
+      <div class="dash-wrap">
+        <div class="page-title">📊 My Dashboard</div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-num" id="statListings">0</div><div class="stat-label">Total Listings</div></div>
+          <div class="stat-card"><div class="stat-num" id="statSaved">0</div><div class="stat-label">Saved Items</div></div>
+          <div class="stat-card"><div class="stat-num" id="statTxns">0</div><div class="stat-label">Transactions</div></div>
+        </div>
+        <div class="panel" style="margin-bottom:18px">
+          <p class="section-title">My Listings</p>
+          <div id="myListings"></div>
+        </div>
+        <div class="panel">
+          <p class="section-title">📋 Buyer / Renter Records</p>
+          <p style="font-size:0.78rem;color:var(--muted);margin-bottom:14px">Details collected when someone buys or rents your items.</p>
+          <div id="transactionSection"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <a data-route="home" style="padding:14px 20px;font-size:1rem;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;color:var(--text);text-decoration:none;cursor:pointer">🏠 Home</a>
+    <a data-route="marketplace" style="padding:14px 20px;font-size:1rem;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;color:var(--text);text-decoration:none;cursor:pointer">🛒 Marketplace</a>
+    <a data-route="recommendations" style="padding:14px 20px;font-size:1rem;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;color:var(--text);text-decoration:none;cursor:pointer">✨ Recommendations</a>
+    <a data-route="sell" style="padding:14px 20px;font-size:1rem;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;color:var(--text);text-decoration:none;cursor:pointer">➕ Post Listing</a>
+    <a data-route="chat" style="padding:14px 20px;font-size:1rem;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;color:var(--text);text-decoration:none;cursor:pointer">💬 Messages</a>
+    <a data-route="dashboard" style="padding:14px 20px;font-size:1rem;display:flex;gap:10px;align-items:center;color:var(--text);text-decoration:none;cursor:pointer">📊 Dashboard</a>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-backdrop" id="loginModal">
+  <div class="modal">
+    <div class="modal-header"><h3>🎓 Campus Login</h3><button class="ghost-button" data-close="loginModal">✕</button></div>
+    <div class="modal-body">
+      <form id="loginForm">
+        <div class="form-field"><label>Full Name</label><input type="text" name="name" placeholder="Yash Jain" required></div>
+        <div class="form-field"><label>College Email</label><input type="email" name="email" placeholder="yash@campus.edu" required></div>
+        <div class="form-field"><label>Branch & Year</label><input type="text" name="branch" placeholder="CSE AI&ML · 2nd Year" required></div>
+        <button type="submit" class="btn-primary full" style="margin-top:8px">Login & Continue</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- VERIFY MODAL -->
+<div class="modal-backdrop" id="verifyModal">
+  <div class="modal">
+    <div class="modal-header"><h3>✅ Student Verification</h3><button class="ghost-button" data-close="verifyModal">✕</button></div>
+    <div class="modal-body">
+      <p style="color:var(--muted);margin-bottom:16px;font-size:0.88rem">Verify your student identity to unlock all features.</p>
+      <div class="form-field"><label>Enrollment Number</label><input type="text" placeholder="e.g. 0832CS221040"></div>
+      <div class="form-field"><label>Student ID Upload</label><div class="upload-zone" style="padding:16px"><span>🪪</span><strong>Upload Student ID</strong><p>JPG or PNG</p></div></div>
+      <button class="btn-primary full" id="completeVerify" style="margin-top:8px">Complete Verification</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEETUP MODAL -->
+<div class="modal-backdrop" id="meetupModal">
+  <div class="modal">
+    <div class="modal-header"><h3>📍 Plan Safe Meetup</h3><button class="ghost-button" data-close="meetupModal">✕</button></div>
+    <div class="modal-body">
+      <p style="color:var(--muted);margin-bottom:16px;font-size:0.86rem">Choose a verified public campus meetup point.</p>
+      <div id="meetupOptions"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="ghost-button" data-close="meetupModal">Cancel</button>
+      <button class="btn-primary" id="confirmMeetup">Confirm Meetup</button>
+    </div>
+  </div>
+</div>
+
+<!-- BUY MODAL -->
+<div class="modal-backdrop" id="buyModal">
+  <div class="modal">
+    <div class="modal-header"><h3 id="buyModalTitle">Complete Your Request</h3><button class="ghost-button" data-close="buyModal">✕</button></div>
+    <div class="modal-body">
+      <div id="buyModalItemInfo" style="background:var(--surface2);border-radius:10px;padding:12px;margin-bottom:16px;border:1px solid var(--border)"></div>
+      <form id="buyerForm" autocomplete="off">
+        <input type="hidden" id="buyItemId">
+        <div class="form-field"><label>Full Name *</label><input type="text" id="buyerName" placeholder="e.g. Yash Jain" required></div>
+        <div class="form-field"><label>Phone Number *</label><input type="tel" id="buyerPhone" placeholder="e.g. 9876543210" maxlength="10" pattern="[0-9]{10}" required></div>
+        <div class="form-field"><label>College Email *</label><input type="email" id="buyerEmail" placeholder="e.g. yash@campus.edu" required></div>
+        <div class="form-field"><label>Branch & Year *</label><input type="text" id="buyerBranch" placeholder="e.g. CSE AI&ML · 2nd Year" required></div>
+        <div class="form-field" id="rentDaysField" style="display:none"><label>Number of Days *</label><input type="number" id="rentDays" min="1" max="30" value="1"></div>
+        <div class="form-field"><label>Message to Seller (optional)</label><textarea id="buyerNote" rows="2" placeholder="Any note for the seller…"></textarea></div>
+        <button type="submit" class="buy-button" id="buySubmitBtn" style="margin-top:4px">✅ Confirm Request</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+const initialListings = [
+  { id:'book-dsa-01', title:'DSA Handwritten Notes Bundle', category:'Notes', type:'Sell', price:499, condition:'Like New', seller:'Ananya Sharma', sellerInitials:'AS', branch:'CSE · 3rd Year', rating:4.9, verified:true, campus:'Baderia Global Institute', meetup:'Library Gate', emoji:'📝', description:'Complete unit-wise handwritten DSA notes with solved PYQs, complexity charts and quick revision sheets.', demand:'Very High', range:[450,650], deal:'Fair Price', saves:18, listed:'2 hours ago', tags:['Exam Ready','PYQ','CSE'] },
+  { id:'macbook-air-m1', title:'MacBook Air M1 8GB/256GB', category:'Gadgets', type:'Sell', price:46000, condition:'Good', seller:'Rohan Mehta', sellerInitials:'RM', branch:'Design · 4th Year', rating:4.7, verified:true, campus:'Baderia Global Institute', meetup:'CSE Department', emoji:'💻', description:'Battery health 89%, original charger included. Best for coding, design and college projects.', demand:'High', range:[45000,52000], deal:'Great Deal', saves:34, listed:'Today', tags:['Coding','Warranty Bill','Popular'] },
+  { id:'calc-casio-991', title:'Casio fx-991ES Plus Calculator', category:'Essentials', type:'Rent', price:39, condition:'Good', seller:'Rahul Verma', sellerInitials:'RV', branch:'Mechanical · 2nd Year', rating:4.8, verified:true, campus:'Baderia Global Institute', meetup:'Main Campus Gate', emoji:'🧮', description:'Scientific calculator available for daily rent during exam week. ID verification required.', demand:'High before exams', range:[30,60], deal:'Great Deal', saves:27, listed:'1 day ago', tags:['Rent Daily','Exam Week','Verified'] },
+  { id:'graphics-drafter', title:'Engineering Graphics Mini Drafter', category:'Lab Tools', type:'Sell', price:850, condition:'Like New', seller:'Viraj Vishwakarma', sellerInitials:'VV', branch:'CSE AI & ML · 2nd Year', rating:4.8, verified:true, campus:'Baderia Global Institute', meetup:'Canteen Area', emoji:'📐', description:'Used for one semester only. Clean board, smooth scale movement, ideal for first-year EG.', demand:'Medium', range:[700,1050], deal:'Fair Price', saves:9, listed:'3 days ago', tags:['First Year','EG','Clean'] },
+  { id:'java-book', title:'Core Java Black Book', category:'Books', type:'Exchange', price:0, condition:'Used', seller:'Neha Patel', sellerInitials:'NP', branch:'IT · 3rd Year', rating:4.6, verified:true, campus:'Baderia Global Institute', meetup:'Library Gate', emoji:'📘', description:'Wants to exchange Core Java Black Book for Python/ML book or DBMS reference book.', demand:'Medium', range:[350,550], deal:'Exchange Only', saves:11, listed:'Yesterday', tags:['Exchange','Java','IT'] },
+  { id:'headphones-sony', title:'Sony WH-CH520 Headphones', category:'Gadgets', type:'Sell', price:2300, condition:'Good', seller:'Aarav Jain', sellerInitials:'AJ', branch:'ECE · 2nd Year', rating:4.5, verified:true, campus:'Baderia Global Institute', meetup:'Hostel Common Room', emoji:'🎧', description:'Bluetooth headphones with good battery backup. Minor scratches, sound quality is strong.', demand:'High', range:[2100,2800], deal:'Fair Price', saves:16, listed:'4 hours ago', tags:['Bluetooth','Music','Calls'] },
+  { id:'hostel-kettle', title:'Electric Kettle + Mug Combo', category:'Essentials', type:'Sell', price:650, condition:'Good', seller:'Sana Khan', sellerInitials:'SK', branch:'Civil · 1st Year', rating:4.4, verified:true, campus:'Baderia Global Institute', meetup:'Girls Hostel Gate', emoji:'☕', description:'Hostel-friendly kettle with steel mug. Perfect for tea, coffee and instant noodles.', demand:'Medium', range:[550,850], deal:'Fair Price', saves:7, listed:'This week', tags:['Hostel','Combo','Daily Use'] },
+  { id:'microcontroller-kit', title:'Arduino Starter Kit', category:'Lab Tools', type:'Rent', price:99, condition:'Like New', seller:'Kabir Singh', sellerInitials:'KS', branch:'ECE · 4th Year', rating:4.9, verified:true, campus:'Baderia Global Institute', meetup:'Electronics Lab', emoji:'🤖', description:'Arduino UNO, sensors, jumper wires, breadboard and motor driver. Rent for project demos.', demand:'Very High', range:[80,150], deal:'Great Deal', saves:31, listed:'Today', tags:['Project','IoT','Rent'] }
+];
+
+const categories = ['All','Books','Gadgets','Notes','Essentials','Lab Tools'];
+const types = ['All','Sell','Rent','Exchange'];
+const qreplies = ['Is this available?','Can you share more photos?','Can we meet at Library Gate?','Is the price negotiable?','Reserve it for me'];
+const meetupPoints = ['Library Gate','Canteen Area','Main Campus Gate','CSE Department','Hostel Common Room'];
+
+const state = {
+  route: 'home',
+  listings: getStored(),
+  selectedCategory: 'All', selectedType: 'All', search: '', budget: 80000,
+  saved: JSON.parse(localStorage.getItem('cmSaved')||'[]'),
+  user: JSON.parse(localStorage.getItem('cmUser')||'null'),
+  selectedChat: 'macbook-air-m1', selectedMeetup: 'Library Gate',
+  uploadedPhotos: [],
+  transactions: JSON.parse(localStorage.getItem('cmTxns')||'[]')
+};
+
+const $ = (s,r=document) => r.querySelector(s);
+const $$ = (s,r=document) => Array.from(r.querySelectorAll(s));
+
+function getStored() {
+  const s = localStorage.getItem('cmListings');
+  if (!s) return initialListings;
+  try { const p=JSON.parse(s); return Array.isArray(p)&&p.length?p:initialListings; } catch { return initialListings; }
+}
+function persistListings() { localStorage.setItem('cmListings', JSON.stringify(state.listings)); }
+function persistUser() { localStorage.setItem('cmUser', JSON.stringify(state.user)); }
+function persistTxns() { localStorage.setItem('cmTxns', JSON.stringify(state.transactions)); }
+
+function showToast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(showToast._t); showToast._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+function openModal(id) { const m=document.getElementById(id); if(m) m.classList.add('open'); }
+function closeModal(id) { const m=document.getElementById(id); if(m) m.classList.remove('open'); }
+
+function setRoute(route, detailId) {
+  state.route = route;
+  $$('.view').forEach(v => v.classList.remove('active'));
+  const view = document.getElementById(`${route}View`);
+  if (view) view.classList.add('active');
+  $$('.sidebar a, .mobile-menu a, .nav-links a').forEach(l => l.classList.toggle('active', l.dataset.route===route));
+  $('#mobileMenu').classList.remove('open');
+  if (route==='marketplace') renderMarketplace();
+  if (route==='details') renderDetails(detailId || state.listings[0].id);
+  if (route==='recommendations') renderRecommendations();
+  if (route==='sell') renderLivePreview();
+  if (route==='chat') renderChat();
+  if (route==='dashboard') renderDashboard();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function routeFromHash() {
+  const hash = location.hash.replace('#','');
+  if (hash.startsWith('details/')) return setRoute('details', hash.split('/')[1]);
+  const valid = ['home','marketplace','recommendations','sell','chat','dashboard'];
+  setRoute(valid.includes(hash) ? hash : 'home');
+}
+
+function renderFilterChips() {
+  $('#categoryFilters').innerHTML = categories.map(c=>`<button class="chip ${state.selectedCategory===c?'active':''}" data-category="${c}">${c}</button>`).join('');
+  $('#typeFilters').innerHTML = types.map(t=>`<button class="chip ${state.selectedType===t?'active':''}" data-type="${t}">${t}</button>`).join('');
+}
+
+function filteredListings() {
+  return state.listings.filter(item => {
+    const mc = state.selectedCategory==='All' || item.category===state.selectedCategory;
+    const mt = state.selectedType==='All' || item.type===state.selectedType;
+    const text = `${item.title} ${item.category} ${item.type} ${item.description} ${item.tags.join(' ')}`.toLowerCase();
+    const ms = !state.search || text.includes(state.search.toLowerCase());
+    const mb = item.type==='Exchange' || item.price<=state.budget;
+    return mc && mt && ms && mb;
+  });
+}
+
+function formatPrice(item) {
+  if (item.type==='Exchange') return 'Exchange';
+  return item.type==='Rent' ? `₹${item.price}/day` : `₹${item.price.toLocaleString('en-IN')}`;
+}
+function dealClass(item) {
+  if (item.deal==='Great Deal') return 'good-pill';
+  if (item.deal==='Fair Price') return 'warning-pill';
+  return 'neutral-pill';
+}
+
+function listingCard(item) {
+  const saved = state.saved.includes(item.id);
+  const media = (item.photos&&item.photos.length) ? `<img src="${item.photos[0]}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover">` : `<div class="listing-emoji">${item.emoji}</div>`;
+  return `
+    <article class="listing-card" data-id="${item.id}">
+      <div class="listing-image">${media}
+        <span class="listing-tag">${item.condition}</span>
+        <button class="listing-save ${saved?'saved':''}" data-save="${item.id}">${saved?'♥':'♡'}</button>
+      </div>
+      <div class="listing-body">
+        <div class="listing-title-row"><h3>${item.title}</h3><span class="listing-price">${formatPrice(item)}</span></div>
+        <div class="listing-meta">
+          <span class="meta-pill">${item.type}</span><span class="meta-pill">${item.category}</span><span class="meta-pill">✅ Verified</span>
+          <span class="${dealClass(item)}">${item.deal}</span>
+        </div>
+        <p style="font-size:0.8rem;color:var(--muted)">${item.description}</p>
+        <div class="card-actions">
+          <button class="btn-details" data-details="${item.id}">Details</button>
+          <button class="btn-msg" data-message="${item.id}">Message</button>
+        </div>
+      </div>
+    </article>`;
+}
+
+function renderMarketplace() {
+  renderFilterChips();
+  const list = filteredListings();
+  $('#budgetLabel').textContent = Number(state.budget).toLocaleString('en-IN');
+  $('#searchInput').value = state.search;
+  const grid = $('#listingGrid');
+  if (!list.length) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><span>🔍</span><h3>No matching resources found</h3><p>Try resetting filters.</p></div>`; return; }
+  grid.innerHTML = list.map(listingCard).join('');
+}
+
+function renderDetails(id) {
+  const item = state.listings.find(e=>e.id===id)||state.listings[0];
+  let gallery = (item.photos&&item.photos.length) ? `<img src="${item.photos[0]}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius)">` : item.emoji;
+  const buyBtnHTML = item.type!=='Exchange' ? `<button class="buy-button" data-buy="${item.id}">${item.type==='Rent'?'🔑 Rent Now':'🛒 Buy Now'}</button>` : '';
+  $('#detailsShell').innerHTML = `
+    <button class="ghost-button" data-route="marketplace">← Back to marketplace</button>
+    <div class="details-grid">
+      <div class="details-gallery reveal">${gallery}</div>
+      <div class="details-card reveal delay-1">
+        <div>
+          <span class="eyebrow">${item.type} · ${item.category}</span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <h2 class="details-title" style="font-size:1.3rem;font-weight:800;margin-top:4px">${item.title}</h2>
+            <button class="listing-save ${state.saved.includes(item.id)?'saved':''}" data-save="${item.id}" style="position:static;background:var(--surface2);border:1px solid var(--border2)">${state.saved.includes(item.id)?'♥':'♡'}</button>
+          </div>
+          <div class="listing-meta" style="margin-top:8px"><span class="meta-pill">${item.condition}</span><span class="meta-pill">${item.listed}</span><span class="meta-pill">${item.saves} saves</span></div>
+        </div>
+        <div class="price-row"><strong>${formatPrice(item)}</strong><span class="${dealClass(item)}">${item.deal}</span></div>
+        <p style="font-size:0.86rem;color:var(--muted)">${item.description}</p>
+        <div class="seller-card"><div class="avatar">${item.sellerInitials}</div><div><strong>${item.seller}</strong><span>✅ Verified · ${item.branch} · ⭐ ${item.rating}</span><span>${item.campus}</span></div></div>
+        <div class="price-analysis">
+          <div class="analysis-row"><span>AI fair range</span><strong>₹${item.range[0].toLocaleString('en-IN')} – ₹${item.range[1].toLocaleString('en-IN')}</strong></div>
+          <div class="analysis-row"><span>Campus demand</span><strong>${item.demand}</strong></div>
+          <div class="analysis-row"><span>Suggested meetup</span><strong>${item.meetup}</strong></div>
+        </div>
+        <div class="details-actions">
+          ${buyBtnHTML}
+          <button class="secondary-button" data-message="${item.id}">💬 Message verified seller</button>
+          <button class="ghost-button full" data-meetup="${item.id}">📍 Plan safe meetup</button>
+          <button class="ghost-button full" data-reserve="${item.id}">🔖 Reserve this item</button>
+        </div>
+      </div>
+    </div>
+    <div class="spec-grid reveal delay-2">
+      <div><span>Safety Status</span><strong>Verified campus seller</strong></div>
+      <div><span>Payment Mode</span><strong>Cash / UPI at meetup</strong></div>
+      <div><span>AI Pricing Basis</span><strong>Condition + demand + similar listings</strong></div>
+      <div><span>Tags</span><strong>${item.tags.join(' · ')}</strong></div>
+    </div>`;
+}
+
+function toggleSave(id) {
+  if (state.saved.includes(id)) state.saved = state.saved.filter(i=>i!==id);
+  else state.saved.push(id);
+  localStorage.setItem('cmSaved', JSON.stringify(state.saved));
+  showToast(state.saved.includes(id)?'Saved to wishlist':'Removed from wishlist');
+  if (state.route==='marketplace') renderMarketplace();
+  if (state.route==='details') renderDetails(id);
+  if (state.route==='recommendations') renderRecommendations();
+}
+
+function renderRecommendations() {
+  const picks = state.listings.filter(i=>['Notes','Essentials','Lab Tools','Gadgets'].includes(i.category)).slice(0,5);
+  $('#recommendationList').innerHTML = picks.map(item=>`
+    <article class="rec-card">
+      <span class="item-icon">${item.emoji}</span>
+      <div>
+        <h3>${item.title}</h3>
+        <p><strong>${item.deal}</strong> · ${item.demand} demand · Recommended based on your branch, exam needs and budget.</p>
+        <div class="rec-actions">
+          <button class="secondary-button" style="padding:7px 16px;font-size:0.8rem" data-details="${item.id}">View</button>
+          <button class="ghost-button" data-save="${item.id}">${state.saved.includes(item.id)?'Saved ♥':'Save ♡'}</button>
+        </div>
+      </div>
+    </article>`).join('');
+}
+
+function currentFormValues() { return Object.fromEntries(new FormData($('#postForm')).entries()); }
+function emojiForCategory(c) { return {Books:'📚',Gadgets:'💻',Notes:'📝',Essentials:'🎒','Lab Tools':'📐'}[c]||'🛍️'; }
+function predictedRange(price, condition) {
+  const base = Number(price)||500;
+  const cf = condition==='Like New'?1.18:condition==='Good'?1:condition==='Used'?.82:.62;
+  return [Math.max(0,Math.round(base*.82*cf/10)*10), Math.round(base*1.25*cf/10)*10];
+}
+
+function renderLivePreview() {
+  const v = currentFormValues();
+  const price = Number(v.price||850);
+  const [low,high] = predictedRange(price, v.condition||'Like New');
+  $('#predictedRange').textContent = `₹${low.toLocaleString('en-IN')} – ₹${high.toLocaleString('en-IN')}`;
+  const deal = price>=low&&price<=high?'Fair Price':price<low?'Great Deal':'High Price';
+  $('#dealSignal').textContent = deal;
+  const pm = state.uploadedPhotos.length ? `<img src="${state.uploadedPhotos[0]}" alt="Preview" style="width:100%;height:140px;object-fit:cover;border-radius:var(--radius) var(--radius) 0 0">` : `<div class="preview-art">${emojiForCategory(v.category)}</div>`;
+  $('#livePreview').innerHTML = `
+    <div class="preview-card">
+      ${pm}
+      <div class="preview-body">
+        <span class="${deal==='Fair Price'?'warning-pill':deal==='Great Deal'?'good-pill':'neutral-pill'}">${deal}</span>
+        <h3 style="font-size:0.9rem;font-weight:700">${v.title||'Your item title'}</h3>
+        <p style="font-size:0.8rem;color:var(--muted)">${v.description||'Item description will appear here.'}</p>
+        <div class="price-row"><strong style="font-size:1.1rem;color:var(--accent2)">${v.type==='Exchange'?'Exchange':v.type==='Rent'?`₹${price}/day`:`₹${price.toLocaleString('en-IN')}`}</strong><span class="meta-pill">${v.condition||'Like New'}</span></div>
+        <div class="listing-meta"><span class="meta-pill">${v.category||'Notes'}</span><span class="meta-pill">${v.meetup||'Library Gate'}</span></div>
+      </div>
+    </div>`;
+}
+
+function publishListing(event) {
+  event.preventDefault();
+  const v = currentFormValues();
+  const price = Number(v.price||0);
+  const range = predictedRange(price, v.condition);
+  const listing = {
+    id:`campmart-${Date.now()}`, title:v.title||'Untitled Campus Item', category:v.category||'Essentials',
+    type:v.type||'Sell', price, condition:v.condition||'Good',
+    seller:state.user?.name||'Viraj Vishwakarma', sellerInitials:initials(state.user?.name||'Viraj Vishwakarma'),
+    branch:state.user?.branch||'CSE AI & ML · 2nd Year', rating:4.8, verified:true,
+    campus:'Baderia Global Institute', meetup:v.meetup||'Library Gate',
+    emoji:emojiForCategory(v.category), description:v.description||'Campus resource listed by a verified student.',
+    demand:'Medium', range, deal:price<range[0]?'Great Deal':price>range[1]?'High Price':'Fair Price',
+    saves:0, listed:'Just now', tags:['New Listing',v.category,v.type], photos:[...state.uploadedPhotos]
+  };
+  state.listings.unshift(listing);
+  persistListings();
+  state.uploadedPhotos = [];
+  resetUploadUI();
+  showToast('Listing published successfully');
+  location.hash = `details/${listing.id}`;
+  setStep(1);
+  event.target.reset();
+  event.target.elements.title.value = 'Engineering Graphics Mini Drafter';
+  event.target.elements.description.value = 'Used for only one semester. Smooth scale movement, clean board, perfect for first-year engineering drawing.';
+  event.target.elements.price.value = 850;
+  renderLivePreview();
+}
+
+function setStep(step) { $$('.form-step').forEach(b => b.classList.toggle('active', Number(b.dataset.step)===step)); }
+function initials(name) { return name.split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase(); }
+
+function renderChat() {
+  const convos = state.listings.slice(0,6);
+  $('#conversationList').innerHTML = convos.map(item=>`
+    <div class="conversation-item ${state.selectedChat===item.id?'active':''}" data-chat="${item.id}">
+      <span class="item-icon">${item.emoji}</span>
+      <div><strong>${item.seller}</strong><span>${item.title}</span></div>
+    </div>`).join('');
+  const item = state.listings.find(l=>l.id===state.selectedChat)||state.listings[0];
+  $('#chatContext').innerHTML = `<div><strong>${item.title}</strong><span>Chat with ${item.seller} · ${formatPrice(item)}</span></div><button class="ghost-button" data-meetup="${item.id}">Meetup</button>`;
+  $('#messages').innerHTML = `
+    <div class="message them">Hi! This ${item.category.toLowerCase()} is still available. I can meet near ${item.meetup}.</div>
+    <div class="message me">Great. Is the condition exactly as mentioned?</div>
+    <div class="message them">Yes, and I can show it before final exchange. CampMart verified meetup works for me.</div>`;
+  $('#quickReplies').innerHTML = qreplies.map(r=>`<button data-quick-reply="${r}">${r}</button>`).join('');
+}
+
+function appendMessage(text, own=true) {
+  if (!text.trim()) return;
+  const b = document.createElement('div'); b.className=`message ${own?'me':'them'}`; b.textContent=text.trim();
+  $('#messages').appendChild(b); $('#messages').scrollTop = $('#messages').scrollHeight;
+}
+
+function renderDashboard() {
+  $('#statListings').textContent = state.listings.length;
+  $('#statSaved').textContent = state.saved.length;
+  $('#statTxns').textContent = state.transactions.length;
+  const mine = state.listings.filter(i=>i.sellerInitials==='VV'||i.seller===state.user?.name).slice(0,6);
+  $('#myListings').innerHTML = mine.map(item=>`
+    <div class="my-listing-row">
+      <span class="item-icon">${item.emoji}</span>
+      <div><strong>${item.title}</strong><span>${item.type} · ${item.condition} · ${item.saves} saves</span></div>
+      <span class="row-price">${formatPrice(item)}</span>
+    </div>`).join('') || `<div class="empty-state"><span>🛍️</span><h3>No personal listings yet</h3><p>Post your first item.</p></div>`;
+  const txns = state.transactions.slice().reverse().slice(0,20);
+  $('#transactionSection').innerHTML = txns.length
+    ? txns.map(t=>`
+      <div class="txn-row">
+        <span class="item-icon">${t.itemEmoji}</span>
+        <div class="txn-info">
+          <strong>${t.itemTitle}</strong>
+          <div class="txn-meta">${t.itemType==='Rent'?`Rented · ${t.rentDays} day(s) · ₹${t.rentDays*(t.itemPriceNum||0)} est.`:'Purchased'} · ${t.itemPrice} · ${t.timestamp}</div>
+          <div class="txn-meta">🏪 Seller: ${t.sellerName}</div>
+          <div class="txn-buyer"><strong>👤 ${t.buyerName}</strong> &nbsp;·&nbsp; 📞 ${t.buyerPhone}<br>✉️ ${t.buyerEmail}<br>🎓 ${t.buyerBranch}${t.note?`<br>💬 "${t.note}"`:''}
+          </div>
+        </div>
+        <span class="status-pill ${t.status==='Confirmed'?'status-confirmed':'status-pending'}">${t.status}</span>
+      </div>`).join('')
+    : `<div class="empty-state"><span>📋</span><h3>No transactions yet</h3><p>When a student buys or rents an item, their details will appear here.</p></div>`;
+}
+
+function updateUserUI() {
+  const name = state.user?.name||'Guest Student';
+  const verified = state.user?.verified;
+  $('#loginBtn').textContent = verified ? 'Verified ✓' : 'Mock Login';
+  $('#avatarBtn').textContent = verified ? initials(name) : '?';
+  $('#sidebarName').textContent = name;
+  $('#sidebarStatus').textContent = verified ? '✅ Verified campus student' : 'Not verified';
+  $('#verifyBtn').textContent = verified ? 'Verified ✓' : 'Verify Student';
+}
+
+function renderMeetupOptions() {
+  $('#meetupOptions').innerHTML = meetupPoints.map(p=>`
+    <div class="meetup-option ${state.selectedMeetup===p?'active':''}" data-point="${p}">
+      <div><strong>${p}</strong><p style="margin:4px 0 0;color:var(--muted);font-size:0.8rem">Public campus spot with safer exchange visibility.</p></div>
+      <span>${state.selectedMeetup===p?'✓':'○'}</span>
+    </div>`).join('');
+}
+
+function openBuyModal(itemId) {
+  const item = state.listings.find(l=>l.id===itemId); if(!item) return;
+  $('#buyItemId').value = itemId;
+  $('#buyModalTitle').textContent = item.type==='Rent'?'🔑 Rent This Item':'🛒 Buy This Item';
+  $('#buyModalItemInfo').innerHTML = `<div style="display:flex;align-items:center;gap:12px"><span style="font-size:2rem">${item.emoji}</span><div><strong style="font-size:0.88rem">${item.title}</strong><br><span style="font-size:0.78rem;color:var(--muted)">${formatPrice(item)} · Seller: ${item.seller} · ${item.meetup}</span></div></div>`;
+  $('#buySubmitBtn').textContent = item.type==='Rent'?'✅ Confirm Rental':'✅ Confirm Purchase';
+  $('#rentDaysField').style.display = item.type==='Rent'?'block':'none';
+  if (state.user) { $('#buyerName').value=state.user.name||''; $('#buyerEmail').value=state.user.email||''; $('#buyerBranch').value=state.user.branch||''; }
+  $('#buyerPhone').value=''; $('#buyerNote').value=''; $('#rentDays').value=1;
+  openModal('buyModal');
+}
+
+function resetUploadUI() {
+  const zone=$('#mockUpload'), grid=$('#photoPreviewGrid');
+  if(grid) grid.innerHTML='';
+  if(zone){ zone.classList.remove('added'); zone.querySelector('span').textContent='📷'; zone.querySelector('strong').textContent='Upload Photos'; zone.querySelector('p').textContent='Click to select images (JPG, PNG, WebP)'; }
+}
+function updateUploadLabel() {
+  const zone=$('#mockUpload'), count=state.uploadedPhotos.length;
+  if(!count){ zone.classList.remove('added'); zone.querySelector('span').textContent='📷'; zone.querySelector('strong').textContent='Upload Photos'; zone.querySelector('p').textContent='Click to select images (JPG, PNG, WebP)'; }
+  else { zone.classList.add('added'); zone.querySelector('span').textContent='✅'; zone.querySelector('strong').textContent=`${count} photo${count>1?'s':''} added`; zone.querySelector('p').textContent=count<5?'Click to add more':'Maximum reached (5/5)'; }
+}
+
+function setupEvents() {
+  document.addEventListener('click', event => {
+    const routeBtn = event.target.closest('[data-route]'); if(routeBtn){ event.preventDefault(); location.hash=routeBtn.dataset.route; return; }
+    const detailsBtn = event.target.closest('[data-details]'); if(detailsBtn){ location.hash=`details/${detailsBtn.dataset.details}`; return; }
+    const saveBtn = event.target.closest('[data-save]'); if(saveBtn){ event.stopPropagation(); toggleSave(saveBtn.dataset.save); return; }
+    const buyBtn = event.target.closest('[data-buy]'); if(buyBtn){ openBuyModal(buyBtn.dataset.buy); return; }
+    const messageBtn = event.target.closest('[data-message]'); if(messageBtn){ state.selectedChat=messageBtn.dataset.message; location.hash='chat'; setTimeout(()=>showToast('Opened secure verified chat'),180); return; }
+    const meetupBtn = event.target.closest('[data-meetup]'); if(meetupBtn){ const item=state.listings.find(l=>l.id===meetupBtn.dataset.meetup); state.selectedMeetup=item?.meetup||state.selectedMeetup; renderMeetupOptions(); openModal('meetupModal'); return; }
+    const reserveBtn = event.target.closest('[data-reserve]'); if(reserveBtn){ const item=state.listings.find(l=>l.id===reserveBtn.dataset.reserve); showToast(`${item?.title||'Item'} reserved`); return; }
+    const catBtn = event.target.closest('[data-category]'); if(catBtn){ state.selectedCategory=catBtn.dataset.category; renderMarketplace(); return; }
+    const typeBtn = event.target.closest('[data-type]'); if(typeBtn){ state.selectedType=typeBtn.dataset.type; renderMarketplace(); return; }
+    const fillBtn = event.target.closest('[data-fill]'); if(fillBtn){ const v=fillBtn.dataset.fill; if(types.includes(v)) state.selectedType=v; else state.selectedCategory=v; renderMarketplace(); showToast(`Filtered: ${v}`); return; }
+    const chatItem = event.target.closest('[data-chat]'); if(chatItem){ state.selectedChat=chatItem.dataset.chat; renderChat(); return; }
+    const qr = event.target.closest('[data-quick-reply]'); if(qr){ appendMessage(qr.dataset.quickReply); return; }
+    const closeBtn = event.target.closest('[data-close]'); if(closeBtn){ closeModal(closeBtn.dataset.close); return; }
+    const point = event.target.closest('[data-point]'); if(point){ state.selectedMeetup=point.dataset.point; renderMeetupOptions(); return; }
+    const lcard = event.target.closest('.listing-card'); if(lcard&&!event.target.closest('button')){ location.hash=`details/${lcard.dataset.id}`; return; }
+  });
+
+  $('#mobileMenuBtn').addEventListener('click', () => $('#mobileMenu').classList.toggle('open'));
+  $('#themeToggle').addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme==='dark'?'light':'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('cmTheme', next);
+    $('#themeToggle').textContent = next==='dark'?'☀️':'🌙';
+  });
+  $('#loginBtn').addEventListener('click', () => openModal('loginModal'));
+  $('#avatarBtn').addEventListener('click', () => state.user ? openModal('verifyModal') : openModal('loginModal'));
+  $('#verifyBtn').addEventListener('click', () => openModal('verifyModal'));
+  $('#completeVerify').addEventListener('click', () => {
+    state.user = state.user||{name:'Yash Jain',email:'yash@campus.edu',branch:'CSE - AI & ML, 2nd Year'};
+    state.user.verified = true; persistUser(); updateUserUI(); closeModal('verifyModal');
+    showToast('Student verification completed');
+  });
+  $('#loginForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target).entries());
+    state.user = {...data, verified:true}; persistUser(); updateUserUI(); closeModal('loginModal');
+    showToast(`Welcome ${data.name.split(' ')[0]}, you are verified`);
+  });
+  $('#confirmMeetup').addEventListener('click', () => { closeModal('meetupModal'); showToast(`Meetup confirmed at ${state.selectedMeetup}`); });
+  $$('.modal-backdrop').forEach(b => b.addEventListener('click', e => { if(e.target===b) b.classList.remove('open'); }));
+  $('#searchInput').addEventListener('input', e => { state.search=e.target.value; renderMarketplace(); });
+  $('#budgetRange').addEventListener('input', e => { state.budget=Number(e.target.value); renderMarketplace(); });
+  $('#resetFilters').addEventListener('click', () => { state.selectedCategory='All'; state.selectedType='All'; state.search=''; state.budget=80000; $('#budgetRange').value=80000; renderMarketplace(); showToast('Filters reset'); });
+  $('#postForm').addEventListener('input', renderLivePreview);
+  $('#postForm').addEventListener('change', renderLivePreview);
+  $('#postForm').addEventListener('submit', publishListing);
+  $$('.next-step').forEach(b => b.addEventListener('click', () => { const cur=Number($('.form-step.active').dataset.step); setStep(Math.min(3,cur+1)); renderLivePreview(); }));
+  $$('.prev-step').forEach(b => b.addEventListener('click', () => { const cur=Number($('.form-step.active').dataset.step); setStep(Math.max(1,cur-1)); renderLivePreview(); }));
+  $('#mockUpload').addEventListener('click', e => { if(e.target.id==='photoInput'||e.target.closest('button')) return; $('#photoInput').click(); });
+  $('#photoInput').addEventListener('change', event => {
+    const files = Array.from(event.target.files); if(!files.length) return;
+    const slotsLeft = 5-state.uploadedPhotos.length; const toProcess=files.slice(0,slotsLeft);
+    if(!toProcess.length){ showToast('Maximum 5 photos allowed'); return; }
+    const grid=$('#photoPreviewGrid');
+    toProcess.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const b64=e.target.result; state.uploadedPhotos.push(b64);
+        const wrap=document.createElement('div'); wrap.style.cssText='position:relative;width:80px;height:80px;border-radius:10px;overflow:hidden;border:2px solid var(--border)';
+        const img=document.createElement('img'); img.src=b64; img.style.cssText='width:100%;height:100%;object-fit:cover';
+        const rm=document.createElement('button'); rm.textContent='✕'; rm.style.cssText='position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;line-height:18px;padding:0;text-align:center';
+        rm.addEventListener('click', ev=>{ ev.stopPropagation(); const idx=state.uploadedPhotos.indexOf(b64); if(idx!==-1) state.uploadedPhotos.splice(idx,1); wrap.remove(); updateUploadLabel(); renderLivePreview(); });
+        wrap.appendChild(img); wrap.appendChild(rm); grid.appendChild(wrap);
+        updateUploadLabel(); renderLivePreview();
+      }; reader.readAsDataURL(file);
+    });
+    showToast(`${Math.min(files.length,slotsLeft)} photo${files.length>1?'s':''} uploaded`);
+    event.target.value='';
+  });
+  $('#buyerForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const itemId=$('#buyItemId').value, item=state.listings.find(l=>l.id===itemId);
+    const rentDays=item?.type==='Rent'?Number($('#rentDays').value)||1:null;
+    const transaction={
+      id:`txn-${Date.now()}`, itemId, itemTitle:item?.title||'Unknown Item', itemEmoji:item?.emoji||'🛍️',
+      itemType:item?.type||'Sell', itemPrice:item?formatPrice(item):'—', itemPriceNum:item?.price||0,
+      sellerName:item?.seller||'—',
+      buyerName:$('#buyerName').value.trim(), buyerPhone:$('#buyerPhone').value.trim(),
+      buyerEmail:$('#buyerEmail').value.trim(), buyerBranch:$('#buyerBranch').value.trim(),
+      rentDays, note:$('#buyerNote').value.trim(), status:'Pending',
+      timestamp:new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})
+    };
+    state.transactions.push(transaction); persistTxns();
+    closeModal('buyModal'); event.target.reset();
+    showToast(`✅ Request sent to ${item?.seller||'seller'}! Details saved.`);
+    if(state.route==='dashboard') renderDashboard();
+  });
+  $('#messageForm').addEventListener('submit', event => {
+    event.preventDefault(); appendMessage($('#messageInput').value); $('#messageInput').value='';
+    setTimeout(()=>appendMessage('Thanks! I will confirm the meetup details on CampMart.',false),800);
+  });
+  $('#applySmartBundle').addEventListener('click', () => {
+    ['book-dsa-01','calc-casio-991','macbook-air-m1'].forEach(id=>{ if(!state.saved.includes(id)) state.saved.push(id); });
+    localStorage.setItem('cmSaved', JSON.stringify(state.saved));
+    renderRecommendations(); showToast('Smart bundle saved to wishlist');
+  });
+  window.addEventListener('hashchange', routeFromHash);
+}
+
+function boot() {
+  const savedTheme = localStorage.getItem('cmTheme');
+  if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+  $('#themeToggle').textContent = document.documentElement.dataset.theme==='dark'?'☀️':'🌙';
+  renderMarketplace(); renderRecommendations(); renderLivePreview(); renderChat(); renderDashboard();
+  updateUserUI(); setupEvents(); routeFromHash();
+}
+function setupEvents() {
+  document.addEventListener('click', event => {
+    const routeBtn = event.target.closest('[data-route]');
+    if (routeBtn) { event.preventDefault(); location.hash = routeBtn.dataset.route; return; }
+
+    const detailsBtn = event.target.closest('[data-details]');
+    if (detailsBtn) { location.hash = `details/${detailsBtn.dataset.details}`; return; }
+
+    const saveBtn = event.target.closest('[data-save]');
+    if (saveBtn) { event.stopPropagation(); toggleSave(saveBtn.dataset.save); return; }
+
+    // NEW: Buy / Rent button
+    const buyBtn = event.target.closest('[data-buy]');
+    if (buyBtn) { openBuyModal(buyBtn.dataset.buy); return; }
+
+    const messageBtn = event.target.closest('[data-message]');
+    if (messageBtn) {
+      state.selectedChat = messageBtn.dataset.message;
+      location.hash = 'chat';
+      setTimeout(() => showToast('Opened secure verified chat'), 180);
+      return;
+    }
+
+    const meetupBtn = event.target.closest('[data-meetup]');
+    if (meetupBtn) {
+      const item = state.listings.find(l=>l.id===meetupBtn.dataset.meetup);
+      state.selectedMeetup = item?.meetup || state.selectedMeetup;
+      renderMeetupOptions();
+      openModal('meetupModal');
+      return;
+    }
+
+    const reserveBtn = event.target.closest('[data-reserve]');
+    if (reserveBtn) {
+      const item = state.listings.find(l=>l.id===reserveBtn.dataset.reserve);
+      showToast(`${item?.title||'Item'} reserved`);
+      return;
+    }
+
+    const catBtn = event.target.closest('[data-category]');
+    if (catBtn) { state.selectedCategory = catBtn.dataset.category; renderMarketplace(); return; }
+
+    const typeBtn = event.target.closest('[data-type]');
+    if (typeBtn) { state.selectedType = typeBtn.dataset.type; renderMarketplace(); return; }
+
+    const fillBtn = event.target.closest('[data-fill]');
+    if (fillBtn) {
+      const v = fillBtn.dataset.fill;
+      if (types.includes(v)) state.selectedType = v; else state.selectedCategory = v;
+      renderMarketplace();
+      showToast(`Filtered: ${v}`);
+      return;
+    }
+
+    const chatItem = event.target.closest('[data-chat]');
+    if (chatItem) { state.selectedChat = chatItem.dataset.chat; renderChat(); return; }
+
+    const qr = event.target.closest('[data-quick-reply]');
+    if (qr) { appendMessage(qr.dataset.quickReply); return; }
+
+    const closeBtn = event.target.closest('[data-close]');
+    if (closeBtn) closeModal(closeBtn.dataset.close);
+
+    const point = event.target.closest('[data-point]');
+    if (point) { state.selectedMeetup = point.dataset.point; renderMeetupOptions(); }
+  });
+
+  $('#mobileMenuBtn').addEventListener('click', () => $('#mobileMenu').classList.toggle('open'));
+  $('#themeToggle').addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme==='dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('campmartTheme', next);
+    $('#themeToggle').textContent = next==='dark' ? '☀️' : '🌙';
+  });
+
+  $('#loginBtn').addEventListener('click', () => openModal('loginModal'));
+  $('#verifyBtn').addEventListener('click', () => openModal('verifyModal'));
+  $('#completeVerify').addEventListener('click', () => {
+    state.user = state.user || { name:'Yash Jain', email:'yash@campus.edu', branch:'CSE - AI & ML, 2nd Year' };
+    state.user.verified = true;
+    persistUser(); updateUserUI(); closeModal('verifyModal');
+    showToast('Student verification completed');
+  });
+
+  $('#loginForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target).entries());
+    state.user = { ...data, verified: true };
+    persistUser(); updateUserUI(); closeModal('loginModal');
+    showToast(`Welcome ${data.name.split(' ')[0]}, you are verified`);
+  });
+
+  $('#confirmMeetup').addEventListener('click', () => {
+    closeModal('meetupModal');
+    showToast(`Meetup confirmed at ${state.selectedMeetup}`);
+  });
+
+  $$('.modal-backdrop').forEach(b => {
+    b.addEventListener('click', e => { if(e.target===b) b.classList.remove('open'); });
+  });
+
+  $('#searchInput').addEventListener('input', e => { state.search = e.target.value; renderMarketplace(); });
+  $('#budgetRange').addEventListener('input', e => { state.budget = Number(e.target.value); renderMarketplace(); });
+  $('#resetFilters').addEventListener('click', () => {
+    state.selectedCategory='All'; state.selectedType='All'; state.search=''; state.budget=80000;
+    $('#budgetRange').value=80000; renderMarketplace(); showToast('Filters reset');
+  });
+
+  $('#postForm').addEventListener('input', renderLivePreview);
+  $('#postForm').addEventListener('change', renderLivePreview);
+  $('#postForm').addEventListener('submit', publishListing);
+  $$('.next-step').forEach(b => b.addEventListener('click', () => {
+    const cur = Number($('.form-step.active').dataset.step);
+    setStep(Math.min(3, cur+1)); renderLivePreview();
+  }));
+  $$('.prev-step').forEach(b => b.addEventListener('click', () => {
+    const cur = Number($('.form-step.active').dataset.step);
+    setStep(Math.max(1, cur-1)); renderLivePreview();
+  }));
+
+  // Photo upload
+  $('#mockUpload').addEventListener('click', e => {
+    if (e.target.id==='photoInput') return;
+    if (e.target.closest('button')) return;
+    $('#photoInput').click();
+  });
+  $('#photoInput').addEventListener('change', event => {
+    const files = Array.from(event.target.files);
+    if (!files.length) return;
+    const slotsLeft = 5 - state.uploadedPhotos.length;
+    const toProcess = files.slice(0, slotsLeft);
+    if (!toProcess.length) { showToast('Maximum 5 photos allowed'); return; }
+    const grid = $('#photoPreviewGrid');
+    toProcess.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const b64 = e.target.result;
+        state.uploadedPhotos.push(b64);
+        const wrap = document.createElement('div');
+        wrap.style.cssText='position:relative;width:80px;height:80px;border-radius:10px;overflow:hidden;border:2px solid var(--border)';
+        const img = document.createElement('img');
+        img.src = b64;
+        img.style.cssText='width:100%;height:100%;object-fit:cover';
+        const rm = document.createElement('button');
+        rm.textContent='✕';
+        rm.style.cssText='position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;line-height:18px;padding:0;text-align:center';
+        rm.addEventListener('click', ev => {
+          ev.stopPropagation();
+          const idx = state.uploadedPhotos.indexOf(b64);
+          if(idx!==-1) state.uploadedPhotos.splice(idx,1);
+          wrap.remove(); updateUploadLabel(); renderLivePreview();
+        });
+        wrap.appendChild(img); wrap.appendChild(rm); grid.appendChild(wrap);
+        updateUploadLabel(); renderLivePreview();
+      };
+      reader.readAsDataURL(file);
+    });
+    showToast(`${Math.min(files.length,slotsLeft)} photo${files.length>1?'s':''} uploaded`);
+    event.target.value='';
+  });
+
+  // NEW: Buyer form submission
+  $('#buyerForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const itemId = $('#buyItemId').value;
+    const item = state.listings.find(l=>l.id===itemId);
+    const rentDays = item?.type==='Rent' ? Number($('#rentDays').value)||1 : null;
+
+    const transaction = {
+      id: `txn-${Date.now()}`,
+      itemId,
+      itemTitle: item?.title||'Unknown Item',
+      itemEmoji: item?.emoji||'🛍️',
+      itemType: item?.type||'Sell',
+      itemPrice: item ? formatPrice(item) : '—',
+      itemPriceNum: item?.price||0,
+      sellerName: item?.seller||'—',
+      buyerName: $('#buyerName').value.trim(),
+      buyerPhone: $('#buyerPhone').value.trim(),
+      buyerEmail: $('#buyerEmail').value.trim(),
+      buyerBranch: $('#buyerBranch').value.trim(),
+      rentDays,
+      note: $('#buyerNote').value.trim(),
+      status: 'Pending',
+      timestamp: new Date().toLocaleString('en-IN', { dateStyle:'medium', timeStyle:'short' })
+    };
+
+    state.transactions.push(transaction);
+    persistTransactions();
+    closeModal('buyModal');
+    event.target.reset();
+    showToast(`✅ Request sent to ${item?.seller||'seller'}! Details saved.`);
+    if (state.route==='dashboard') renderDashboard();
+  });
+
+  $('#messageForm').addEventListener('submit', event => {
+    event.preventDefault();
+    appendMessage($('#messageInput').value);
+    $('#messageInput').value='';
+    setTimeout(() => appendMessage('Thanks! I will confirm the meetup details on CampMart.', false), 800);
+  });
+
+  $('#applySmartBundle').addEventListener('click', () => {
+    ['book-dsa-01','calc-casio-991','macbook-air-m1'].forEach(id => { if(!state.saved.includes(id)) state.saved.push(id); });
+    localStorage.setItem('campmartSaved', JSON.stringify(state.saved));
+    renderRecommendations();
+    showToast('Smart bundle saved to wishlist');
+  });
+
+  window.addEventListener('hashchange', routeFromHash);
+}
+
+function boot() {
+  const savedTheme = localStorage.getItem('campmartTheme');
+  if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+  $('#themeToggle').textContent = document.documentElement.dataset.theme==='dark' ? '☀️' : '🌙';
+  renderMarketplace();
+  renderRecommendations();
+  renderLivePreview();
+  renderChat();
+  renderDashboard();
+  updateUserUI();
+  setupEvents();
+  routeFromHash();
+}
+
+document.addEventListener('DOMContentLoaded', boot);
+</script>
+</body>
+</html>
+
+document.addEventListener('DOMContentLoaded', boot);
+</script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Calculus III Textbook - CampusMarket</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&amp;family=Inter:wght@400;500&amp;family=Geist:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .bento-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bento-card:hover {
+            border-color: #2559bd;
+        }
+        /* Custom scrollbar for gallery */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface-tint": "#2559bd",
+                      "primary-fixed": "#dae2ff",
+                      "surface-variant": "#e2e2e5",
+                      "on-surface-variant": "#434653",
+                      "tertiary": "#333737",
+                      "surface-container-high": "#e8e8ea",
+                      "outline": "#737784",
+                      "inverse-primary": "#b1c5ff",
+                      "on-background": "#1a1c1e",
+                      "secondary-fixed": "#9af6b8",
+                      "surface-bright": "#f9f9fc",
+                      "on-secondary-fixed-variant": "#00522d",
+                      "inverse-on-surface": "#f0f0f3",
+                      "secondary-container": "#97f3b5",
+                      "secondary-fixed-dim": "#7ed99e",
+                      "on-error-container": "#93000a",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#c4c7c6",
+                      "error": "#ba1a1a",
+                      "on-tertiary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-surface": "#1a1c1e",
+                      "tertiary-fixed": "#e0e3e2",
+                      "inverse-surface": "#2f3133",
+                      "on-primary-fixed": "#001946",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed": "#00210f",
+                      "on-secondary-container": "#047240",
+                      "secondary": "#006d3d",
+                      "surface-dim": "#dadadc",
+                      "surface-container": "#eeeef0",
+                      "on-tertiary-container": "#bcbfbe",
+                      "background": "#f9f9fc",
+                      "primary-fixed-dim": "#b1c5ff",
+                      "on-tertiary-fixed": "#181c1c",
+                      "on-tertiary-fixed-variant": "#434847",
+                      "on-primary-fixed-variant": "#00419e",
+                      "on-primary-container": "#a5bdff",
+                      "tertiary-container": "#4a4e4e",
+                      "primary": "#00327d",
+                      "primary-container": "#0047ab",
+                      "surface": "#f9f9fc",
+                      "on-error": "#ffffff",
+                      "outline-variant": "#c3c6d5",
+                      "surface-container-highest": "#e2e2e5",
+                      "surface-container-low": "#f3f3f6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "margin-mobile": "16px",
+                      "base": "4px",
+                      "stack-lg": "32px",
+                      "gutter": "24px",
+                      "stack-md": "16px",
+                      "margin-desktop": "40px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "label-md": ["Geist"],
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "body-lg": ["Inter"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "label-sm": ["Geist"],
+                      "headline-md": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-surface docked full-width top-0 border-b border-outline-variant z-50 sticky">
+<nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-stack-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-stack-md">
+<a class="text-headline-md font-headline-md font-extrabold text-primary" href="#">CampusMarket</a>
+</div>
+<div class="hidden md:flex flex-1 max-w-xl mx-gutter">
+<div class="relative w-full">
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-full px-stack-lg py-2 text-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="Search for textbooks, gadgets, or housing..." type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-container transition-colors rounded-full">notifications</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a college student smiling, wearing a university branded hoodie. The lighting is soft and high-key, set against a minimalist light grey background. The student has a small verified green badge overlayed on the corner of the image, reflecting a high-trust campus marketplace aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyjshziDv_V_S5zyFGtAbijzG-9Sp5RyznYeQASuaqvCpIk30A7AMdNOxk7Sp_unkjAVmwU6gaj86phYjGmUX7Q6y_dEP7F2vhWtlgU1XoVUOo06ZoaliphDjkO8l3-rVeySqSmGvFhN5FPV3XnFW_E0Nm79aVBCD6rG179Fa3oMvYSPNj7MjsfnBcHObg3dAKq-K5ATOCgksTmRXLQQTd9YCTjcNH-cLBCkX5CmU1a_PJN3G_6mTpJIOXKjxQveVCpSvJFthleI4"/>
+</div>
+</div>
+</nav>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Back Navigation & Breadcrumbs -->
+<div class="flex items-center gap-2 mb-stack-lg text-on-surface-variant">
+<button class="flex items-center text-label-md font-label-md hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px] mr-1">arrow_back</span>
+                Back to Books
+            </button>
+<span class="text-outline-variant">/</span>
+<span class="text-label-md font-label-md">Mathematics</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Media & Description (7 Columns) -->
+<div class="lg:col-span-7 space-y-gutter">
+<!-- Image Gallery Bento -->
+<div class="grid grid-cols-4 grid-rows-2 gap-4 h-[500px]">
+<div class="col-span-3 row-span-2 relative rounded-xl overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A high-resolution, close-up photograph of a Calculus III textbook resting on a clean, white modern desk. The cover features vibrant mathematical visualizations in blues and greens. Soft daylight from a nearby window creates gentle highlights and shadows, emphasizing the 'Like New' condition of the book. Modern university dorm room aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfuIEtZjv8_xkTgUB0RcI89xNKphr2zqR89MazwjyhBGwjldXHqMBxv22mzi3-Fm2Y3OvvNUwAtb5QkQzWY2wzKp7MMHjyiTKB0kQvibudVk51JT5BV0mrfZiglnNK5PR9ZtNHCEgImneYIYpx9qUDSV_tpKF4ZTkJ5Qh5jlfBGktiXCChpEq0e1tdrRx57MgC-R5Nl0ZqfQc0KQMBv1lzTrCQBmS3nOVroGr3W8PQuhS33isZ-Z7wfydff-2eoPBDzMGhWLySSpY"/>
+<div class="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-label-sm font-label-sm">Like New</div>
+</div>
+<div class="col-span-1 row-span-1 rounded-xl overflow-hidden border border-outline-variant group cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close-up detail of the spine and corners of a Calculus III textbook, demonstrating no wear or tear. The lighting is bright and even, highlighting the crisp edges of the pages. High-quality product photography with a shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYMXE99ESF726Dqcnx6oDkw-NV9vWmf4TRfiAHnXhT2RCLDRE-3ZZsV4RqpPiR6hhllaSwNyWPzmKhCLNfOYhA2q3nRVlYYlRaRnbQGG5XUpFpHu0JgOEPpn_oZwVJ3TCQbV9MKAwmIPw286t4akGacoiEhC_sw2dGPndpQTi7YgyrkQmAGk_YQUO9vmJLvkfKiHwxDEVWFIOMvoi4YHFQb6LXBMC_dS8EdVGVpwoMbJUzaEC7Ptgjm5lxDALQEcYGyaqKNIhuKXA"/>
+</div>
+<div class="col-span-1 row-span-1 relative rounded-xl overflow-hidden border border-outline-variant group cursor-pointer bg-surface-container-highest">
+<img class="w-full h-full object-cover opacity-60 transition-transform duration-500 group-hover:scale-110" data-alt="An open page of a mathematics textbook showing complex multivariable calculus diagrams and clean, unmarked white paper. The text is crisp and the diagrams are colorful. Minimalist and academic atmosphere with a focus on quality and cleanliness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL9cnA119sMmyJdVDSMlgQXknfibD5cR0cCw3zoQg7LvcI_T1RB___NVZF8-xeJb2semNa95OAy61B-M54V1P2OlHbNtWWSZxsQQTjj6GvUhF9B9Q9lObLg8AV5FxUWkVJbZjQRclN8pyzvDDUd4q0pM7ffQopS4HK59TCR0onfeZjGALJHC5Crc8Jcc5nyHYxoJlBSjo4BLC1YO7k0D1ZrTPt-oTza_xMXIrH6qYJbwy3JjS7FOQCAwWvbFv86tKlrYVf_04IcNI"/>
+<div class="absolute inset-0 flex items-center justify-center text-on-surface font-bold">+3</div>
+</div>
+</div>
+<!-- Description Bento Card -->
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant">
+<h2 class="text-headline-md font-headline-md mb-stack-sm text-primary">Description</h2>
+<p class="text-body-md text-on-surface-variant leading-relaxed mb-stack-md">
+                        Hardcover version of Stewart's Multivariable Calculus (9th Edition). Used for exactly one semester in MATH 241. The book is in pristine condition with absolutely no highlighting, pencil marks, or dog-eared pages. Includes the original unused digital access code for WebAssign.
+                    </p>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-stack-md pt-stack-md border-t border-outline-variant">
+<div>
+<p class="text-label-sm font-label-sm text-outline uppercase tracking-wider">ISBN</p>
+<p class="text-body-md font-bold">978-1337275378</p>
+</div>
+<div>
+<p class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Edition</p>
+<p class="text-body-md font-bold">9th Edition</p>
+</div>
+<div>
+<p class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Format</p>
+<p class="text-body-md font-bold">Hardcover</p>
+</div>
+</div>
+</div>
+<!-- Smart Price Analysis Section -->
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant overflow-hidden relative">
+<div class="flex justify-between items-start mb-stack-lg">
+<div>
+<h2 class="text-headline-md font-headline-md text-primary">Smart Price Analysis</h2>
+<p class="text-body-md text-on-surface-variant">Real-time campus market trends for this edition.</p>
+</div>
+<div class="bg-secondary-container text-on-secondary-container px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] fill-icon">trending_down</span>
+<span class="text-label-md font-label-md">Great Deal</span>
+</div>
+</div>
+<div class="h-48 w-full relative mt-4">
+<!-- Custom CSS Graph Visualization -->
+<div class="absolute inset-0 flex items-end justify-between px-2 gap-4">
+<div class="w-full bg-surface-container-high rounded-t-lg h-[60%] hover:bg-primary/20 transition-colors relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-primary text-white text-[10px] px-2 py-1 rounded transition-opacity">$95</div>
+</div>
+<div class="w-full bg-surface-container-high rounded-t-lg h-[45%] hover:bg-primary/20 transition-colors relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-primary text-white text-[10px] px-2 py-1 rounded transition-opacity">$82</div>
+</div>
+<div class="w-full bg-surface-container-high rounded-t-lg h-[85%] hover:bg-primary/20 transition-colors relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-primary text-white text-[10px] px-2 py-1 rounded transition-opacity">$115</div>
+</div>
+<div class="w-full bg-surface-container-high rounded-t-lg h-[30%] hover:bg-primary/20 transition-colors relative group border-t-4 border-primary">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-primary text-white text-[10px] px-2 py-1 rounded transition-opacity">$65 (Current)</div>
+</div>
+</div>
+<!-- Baseline indicator -->
+<div class="absolute bottom-0 left-0 w-full h-[1px] bg-outline-variant"></div>
+</div>
+<div class="mt-stack-lg p-4 bg-surface-bright rounded-lg flex items-start gap-3 border border-outline-variant border-dashed">
+<span class="material-symbols-outlined text-secondary">info</span>
+<p class="text-label-md font-label-md text-on-surface-variant">
+                            This textbook is listed <span class="text-secondary font-bold">24% lower</span> than the average campus bookstore price. Based on recent transactions, items in this condition usually sell within 48 hours.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Right Column: Pricing, Seller & Actions (5 Columns) -->
+<div class="lg:col-span-5 space-y-gutter">
+<!-- Sticky Action Card -->
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border-2 border-primary-container shadow-sm sticky top-24">
+<div class="mb-stack-lg">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-display-lg font-display-lg text-primary">$65.00</span>
+<span class="text-on-surface-variant line-through text-body-lg">$142.99 New</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex text-secondary">
+<span class="material-symbols-outlined text-[18px] fill-icon">star</span>
+<span class="material-symbols-outlined text-[18px] fill-icon">star</span>
+<span class="material-symbols-outlined text-[18px] fill-icon">star</span>
+<span class="material-symbols-outlined text-[18px] fill-icon">star</span>
+<span class="material-symbols-outlined text-[18px] fill-icon">star_half</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">4.8 (12 Sales)</span>
+</div>
+</div>
+<div class="space-y-4">
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-2 hover:bg-primary-container active:scale-95 transition-all">
+<span class="material-symbols-outlined">forum</span>
+                            Start Secure Chat
+                        </button>
+<button class="w-full bg-surface-bright border-2 border-primary text-primary py-4 rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-2 hover:bg-primary-fixed transition-all">
+<span class="material-symbols-outlined">payments</span>
+                            Purchase Now
+                        </button>
+</div>
+<div class="mt-stack-lg pt-stack-lg border-t border-outline-variant">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A clean and friendly profile picture of a male university student with a professional smile, wearing a casual polo shirt. The image is set against a brightly lit academic building hallway with a blurred background. The student has a green 'Verified' badge checkmark visible on their profile picture, indicating high trust and security." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQpIi13p6z4IUNM8hVnsuESNp0KOoqztit8-8VzVBhzm5P0LImgP0y3L0HybaNysyoNpD-BU4QE0dKkgR-Sxi5nUzXM2PaKKw-Pi1c8j9vhEM9opnCcnyOV6l-hOU5kUTYozLO8ZvHMpyDH9UOfgUqQw_KmSVglY2Wnkm0cu1tzqMXFTyg24IR8FaWfKY-1fgbzcCDnLFWAxh5EA6WkkhtqFulwEilD7q_sR7hkvbXeifX8BFEwbF4JJGpiBN0irT7XU-4nZEEeDw"/>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<h4 class="text-label-md font-label-md">Alex Rivers</h4>
+<span class="material-symbols-outlined text-secondary text-[16px] fill-icon" title="Verified Campus Seller">verified</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Senior, Engineering Major</p>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                                Typically meets at Science Library
+                            </div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+                                Usually responds within 1 hour
+                            </div>
+</div>
+</div>
+<!-- Safety Tip -->
+<div class="mt-gutter flex items-start gap-2 text-label-sm font-label-sm text-on-surface-variant bg-surface-container-highest p-3 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-[18px]">shield</span>
+<span>Meet in a public campus location for the hand-off. CampusMarket Secure Pay protects your funds until you confirm the item is as described.</span>
+</div>
+</div>
+<!-- Similar Items Bento Teaser -->
+<div class="bg-surface-container-lowest p-stack-md rounded-xl border border-outline-variant">
+<h3 class="text-label-md font-label-md text-primary mb-4">People also viewed</h3>
+<div class="space-y-4">
+<div class="flex gap-3 items-center group cursor-pointer">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="A macro photograph of the cover of a 'Linear Algebra' textbook with a bright yellow cover and abstract geometric designs. The image is crisp and professional, highlighting the book's quality and academic focus within the campus marketplace aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOriom16_5ln-zH5hU6OAMwLr5iI_cHmzUMVheuRnB7nolfkkK-TiG1GiO1Iw2RX47PAf6kNAJ-jRg7nJPzw458IpBbeqp4D2ty3u_6g9UtyBgftn_2gPi1MK6hxX7D_wgS0neYva60pC_nHzTTFkmNoqNOpsZgAZ0NjVzeXeL7tg7HWE3fmCiEwcMiM8LfjhY4p6Wnvkqdo0GgDO86VF2X3edw0Si5E7kNiQQog0ZoLGX_Ylh9cBKO_Aue0G8dvkKEu4QippV-hU"/>
+</div>
+<div class="flex-1">
+<p class="text-label-md font-label-md line-clamp-1 group-hover:text-primary transition-colors">Linear Algebra &amp; Applications</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">$45.00</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary">chevron_right</span>
+</div>
+<div class="flex gap-3 items-center group cursor-pointer">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Product shot of a professional-grade scientific calculator, specifically a TI-84 Plus CE, resting on a wooden desk next to some notes. The lighting is clean and bright, emphasizing the calculator's like-new condition. High-trust tech-forward aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYBBABKDGuzH671ydp-xiPIIWDEHMu1B4NziK5EtJI1G9ZuO9syu9qJotiMxi29dlVbSEsKpFLj6Ztx6vqYOJbQiRRIebijV1n4cOVZWceh_BPwb7fOzIhilBV8Z0dyr5YQY2UDeyTne6XBAxmsmz5wqWmYeGbTiHI_7ncdzTtX-WcMF-U0UKsJuM28ifmDSK8RtawA1DYDgGlHf5yqmS7sDtZAGykWWkSKZvPFdpdeKj1w5bTg6noWycyL8FOW0oR3lJbcDhvBv8"/>
+</div>
+<div class="flex-1">
+<p class="text-label-md font-label-md line-clamp-1 group-hover:text-primary transition-colors">TI-84 Plus CE Graphing Calculator</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">$85.00</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 lg:hidden bg-surface dark:bg-surface-container-lowest shadow-lg">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-label-sm font-label-sm">Feed</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+<span class="text-label-sm font-label-sm">Search</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-label-sm font-label-sm">Chat</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="text-label-sm font-label-sm">Sell</span>
+</div>
+</nav>
+<!-- Simple Interaction Logic -->
+<script>
+        // Micro-interactions for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.95)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+
+        // Toggle Like logic
+        const favBtn = document.createElement('button');
+        favBtn.className = "absolute top-4 right-4 bg-white/80 backdrop-blur-md p-2 rounded-full shadow-sm text-on-surface-variant hover:text-error transition-all active:scale-90 z-10";
+        favBtn.innerHTML = '<span class="material-symbols-outlined">favorite</span>';
+        document.querySelector('.col-span-3').appendChild(favBtn);
+        
+        favBtn.addEventListener('click', function() {
+            const icon = this.querySelector('.material-symbols-outlined');
+            if (icon.classList.contains('fill-icon')) {
+                icon.classList.remove('fill-icon');
+                this.classList.remove('text-error');
+            } else {
+                icon.classList.add('fill-icon');
+                this.classList.add('text-error');
+            }
+        });
+    </script>
+</body></html>

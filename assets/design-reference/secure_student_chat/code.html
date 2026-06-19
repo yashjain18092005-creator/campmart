@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusMarket | Student Chat &amp; Meetup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Link -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#2559bd",
+                    "primary-fixed": "#dae2ff",
+                    "surface-variant": "#e2e2e5",
+                    "on-surface-variant": "#434653",
+                    "tertiary": "#333737",
+                    "surface-container-high": "#e8e8ea",
+                    "outline": "#737784",
+                    "inverse-primary": "#b1c5ff",
+                    "on-background": "#1a1c1e",
+                    "secondary-fixed": "#9af6b8",
+                    "surface-bright": "#f9f9fc",
+                    "on-secondary-fixed-variant": "#00522d",
+                    "inverse-on-surface": "#f0f0f3",
+                    "secondary-container": "#97f3b5",
+                    "secondary-fixed-dim": "#7ed99e",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#c4c7c6",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#1a1c1e",
+                    "tertiary-fixed": "#e0e3e2",
+                    "inverse-surface": "#2f3133",
+                    "on-primary-fixed": "#001946",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#00210f",
+                    "on-secondary-container": "#047240",
+                    "secondary": "#006d3d",
+                    "surface-dim": "#dadadc",
+                    "surface-container": "#eeeef0",
+                    "on-tertiary-container": "#bcbfbe",
+                    "background": "#f9f9fc",
+                    "primary-fixed-dim": "#b1c5ff",
+                    "on-tertiary-fixed": "#181c1c",
+                    "on-tertiary-fixed-variant": "#434847",
+                    "on-primary-fixed-variant": "#00419e",
+                    "on-primary-container": "#a5bdff",
+                    "tertiary-container": "#4a4e4e",
+                    "primary": "#00327d",
+                    "primary-container": "#0047ab",
+                    "surface": "#f9f9fc",
+                    "on-error": "#ffffff",
+                    "outline-variant": "#c3c6d5",
+                    "surface-container-highest": "#e2e2e5",
+                    "surface-container-low": "#f3f3f6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "margin-mobile": "16px",
+                    "base": "4px",
+                    "stack-lg": "32px",
+                    "gutter": "24px",
+                    "stack-md": "16px",
+                    "margin-desktop": "40px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "label-md": ["Geist"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "label-sm": ["Geist"],
+                    "headline-md": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c3c6d5; border-radius: 10px; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .chat-bubble-right { border-radius: 18px 18px 2px 18px; }
+        .chat-bubble-left { border-radius: 18px 18px 18px 2px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-white">
+<!-- TopNavBar -->
+<header class="bg-surface sticky top-0 z-[60] border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-stack-sm max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md font-extrabold text-primary">CampusMarket</div>
+<div class="hidden md:flex items-center gap-stack-lg">
+<nav class="flex gap-gutter">
+<a class="text-on-surface-variant hover:bg-surface-container transition-colors px-2 py-1" href="#">Home</a>
+<a class="text-on-surface-variant hover:bg-surface-container transition-colors px-2 py-1" href="#">Explore</a>
+<a class="text-primary font-bold border-b-2 border-primary px-2 py-1" href="#">Messages</a>
+<a class="text-on-surface-variant hover:bg-surface-container transition-colors px-2 py-1" href="#">My Listings</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-container rounded-full transition-colors">notifications</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a friendly student with a digital verified badge overlay. The lighting is warm and natural, suggesting a campus environment. The overall aesthetic is professional yet approachable, reflecting high-trust peer-to-peer commerce." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfyPfUXXSUoP9wkMrBqFygGdwzddp6fVY8Y6r9Huu8T5agnhDMKZ8E8P64G17E9m-9wXcAgqbzBZ0kMRKG7o2W58UmlYcAUBr0qbDwvHE9VIzZDqwlf6XZAAxHmOQd1AlCxdu-IP62f1a-ESNkGi9rNJSwRkEGiNbzLyB7UnYHfQuvNf6lNAa9Fq-D9O3QJQK7iR-YkLx8XjFw2XgaIUUZK5jE-3G1LHqNq1UUbidUwHb6AfUEIZQURZNvOM5ovvS29zEDku7zsiM"/>
+</div>
+</div>
+</div>
+<button class="md:hidden material-symbols-outlined text-on-surface p-2">menu</button>
+</div>
+</header>
+<div class="flex max-w-container-max mx-auto h-[calc(100vh-64px)] overflow-hidden">
+<!-- SideNavBar (Conversations Sidebar) -->
+<aside class="hidden lg:flex flex-col w-80 bg-surface-bright border-r border-outline-variant">
+<div class="p-stack-md border-b border-outline-variant">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-body-md" placeholder="Search chats..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Conversation Item: Active -->
+<div class="flex items-center gap-stack-md bg-secondary-container text-on-secondary-container px-stack-md py-stack-md cursor-pointer transition-all border-b border-outline-variant/30">
+<div class="relative">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A portrait of a male student wearing a university hoodie, smiling genuinely. Soft-focus university library background. Sharp focus on the subject with high-contrast, clean lighting characteristic of a professional modern UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL_y8RhlAFjd-dc4-va7UHZXA8TZutjBADHYDRbuW7v2mDPAi0iEwGF4sj10g0HiVf6Br3pqwaZv-hZJOG1w1eplzcgAjrlsOwFh84CQwPGXBcNpsWsEGWI30EF2c-rxmNREGB88JneHD2M82bfORckzTcB5gdcWEubzbn3qgZfYnrnCMD97s0WVmLyMlFtAeDCDA3R8p4MeHFlReLfQCXQf30T2urIqWn32E-_kgIFtOAdlBP0Ccr_mLTVjlrzDYtzdBX__ll64w"/>
+</div>
+<div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-secondary rounded-full border-2 border-white"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md truncate">Alex Rivera</span>
+<span class="text-[10px] opacity-70">2m ago</span>
+</div>
+<p class="text-label-sm font-label-sm truncate opacity-80">Is the Calculus textbook still available?</p>
+</div>
+</div>
+<!-- Conversation Item -->
+<div class="flex items-center gap-stack-md hover:bg-surface-container-highest text-on-surface-variant px-stack-md py-stack-md cursor-pointer transition-all border-b border-outline-variant/30">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A diverse female student in a bright studio setting, looking friendly and reliable. Minimalist white background with subtle blue shadows. Professional quality headshot for a high-trust campus marketplace app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-9dUtOJqlYneR91SLXoFBO-VLmwQJKBj3JMybEI7MoNadxrQnyOijqSLRVrGqWEblCQgVw_zopzTmFkavoM0fxO_TbJm5bL_xNsnUjeJ971CUCCg8Lq-U2CB9ukc5lzyvY9rytuH15Ifd6h8vCejqgt_JaD-9fcCmU5_Zf6wkxL3uCC8oxOFMI4JXK4gTnteQlH7YzKTO0CbFzoKmRsJ1OJYpYteGmJUf8cHaYxWYKxzUxINPCk2mTgKi2_mjaILEziXosfsqUwQ"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md truncate text-on-surface">Sarah Jenkins</span>
+<span class="text-[10px]">1h ago</span>
+</div>
+<p class="text-label-sm font-label-sm truncate">I can meet at the Student Union at 4 PM.</p>
+</div>
+</div>
+<!-- Conversation Item -->
+<div class="flex items-center gap-stack-md hover:bg-surface-container-highest text-on-surface-variant px-stack-md py-stack-md cursor-pointer transition-all border-b border-outline-variant/30">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A confident male student with glasses, smiling warmly. The photo has a clean, airy feel with high-key lighting. The style is modern corporate but youth-focused, ensuring safety and reliability in a peer-to-peer context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9-4jDaSebTz5E6_Blki58rDIG-qISlqfxgOfNMF9JasD1oVrzlMPaFB-9org_8rvGPC1_LDSWypywpY2TbPD2sSk9MG_XFm-oG_Z66736nyLky-TAN3DTaHnaIIsYeNJJXp8cToFA-lESNG5U14h6CSrWRhwYJQED-tC9Vu2bl5FemQM9F9vAoXz9v6ZspZAST5pz84eoCDzkJtamPKShGYhMzboRak0SLEsy1u_ZZmSskQfmDQ6JXcC08b81sok4hi3UHPSeS3s"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md truncate text-on-surface">Jordan Lee</span>
+<span class="text-[10px]">Yesterday</span>
+</div>
+<p class="text-label-sm font-label-sm truncate">The monitor works perfectly, thanks!</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Chat Canvas -->
+<main class="flex-1 flex flex-col bg-surface relative">
+<!-- Chat Header -->
+<header class="h-16 flex items-center justify-between px-stack-md border-b border-outline-variant bg-white/80 backdrop-blur-md sticky top-0 z-10">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up of Alex Rivera, a student with a friendly expression. Soft natural lighting from a window. High resolution, professional grade portraiture for an interface that prioritizes peer verification and safety." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChyk0Vb0gdspVqU6y_kE4LWGCK0ZLZ4qWsNkO6xKjy3h3tJqO8Ssoppu4kwvu7LTtxbXPsOjI8UMPbFnQYOH0el9vuL5TMUAdfXmP9pWgaf8lVaq02LPoruHX4LFmn5UyhMvkkfPUVl3tPhsDW-ukj0JYo79_kMPMi0hqKhTiZe9myuj6RvBt1WvTXUR-iZXcPCTgIp2pCXng4Rj3zD0dghgZ9WqBL88cvkshuYn5Dhcuq9nmU6pxH2WWgTkdw3qVhec7WkRLo9_4"/>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<span class="font-headline-md text-body-md font-bold">Alex Rivera</span>
+<div class="flex items-center gap-1 bg-secondary-container px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-label-sm font-label-sm text-on-secondary-container">Verified Student</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-secondary">Active now</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors material-symbols-outlined text-on-surface-variant">videocam</button>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors material-symbols-outlined text-on-surface-variant">info</button>
+</div>
+</header>
+<!-- Chat Content Area -->
+<div class="flex-1 overflow-y-auto p-stack-md flex flex-col gap-stack-md custom-scrollbar">
+<!-- System Tip -->
+<div class="mx-auto bg-surface-container-low px-4 py-2 rounded-full flex items-center gap-2 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[18px] text-primary">security</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Chat is encrypted. Always meet in public campus spots.</span>
+</div>
+<!-- Left Bubble -->
+<div class="flex flex-col items-start max-w-[80%]">
+<div class="bg-surface-container-highest text-on-surface chat-bubble-left px-4 py-3 shadow-sm border border-outline-variant/30">
+<p class="text-body-md">Hey! I saw your listing for the 'Introduction to Calculus' 10th edition. Is it still available for $45?</p>
+</div>
+<span class="text-[10px] text-on-surface-variant mt-1 ml-1">10:42 AM</span>
+</div>
+<!-- Right Bubble -->
+<div class="flex flex-col items-end self-end max-w-[80%]">
+<div class="bg-primary text-white chat-bubble-right px-4 py-3 shadow-md">
+<p class="text-body-md">Yes, it is! I barely used it last semester, so it's basically in 'Like New' condition. No highlights or marks.</p>
+</div>
+<span class="text-[10px] text-on-surface-variant mt-1 mr-1">10:44 AM</span>
+</div>
+<!-- Left Bubble -->
+<div class="flex flex-col items-start max-w-[80%]">
+<div class="bg-surface-container-highest text-on-surface chat-bubble-left px-4 py-3 shadow-sm border border-outline-variant/30">
+<p class="text-body-md">That's great. I'd like to grab it today if possible. Are you on campus? I can pay via CampusPay or cash.</p>
+</div>
+<span class="text-[10px] text-on-surface-variant mt-1 ml-1">10:45 AM</span>
+</div>
+<!-- Right Bubble (Meetup Suggestion) -->
+<div class="flex flex-col items-end self-end w-full max-w-sm">
+<div class="bg-primary text-white chat-bubble-right px-4 py-3 shadow-md w-full">
+<p class="text-body-md">Perfect. Let's meet at a Safe Spot. I've sent a suggestion below!</p>
+</div>
+<div class="mt-2 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm w-full">
+<div class="h-32 bg-surface-container-high relative">
+<div class="absolute inset-0 bg-cover bg-center" data-location="University Student Union" style="background-image: url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-primary text-white p-2 rounded-full shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+</div>
+<div class="p-3">
+<h4 class="font-bold text-body-md">The Student Union Lobby</h4>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Recommended: High foot traffic, CCTV coverage, well-lit.</p>
+<button class="mt-3 w-full bg-secondary-container text-on-secondary-container font-label-md text-label-md py-2 rounded-lg hover:brightness-95 transition-all">Accept Meetup Spot</button>
+</div>
+</div>
+<span class="text-[10px] text-on-surface-variant mt-1 mr-1">10:46 AM</span>
+</div>
+<!-- Item Transaction Summary (Asymmetric Card) -->
+<div class="mt-4 border-2 border-dashed border-outline-variant p-stack-md rounded-2xl bg-surface-container-lowest/50 flex flex-col md:flex-row gap-stack-md items-center justify-between">
+<div class="flex items-center gap-stack-md">
+<div class="w-16 h-16 rounded-lg bg-surface-container-high overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean, high-resolution photo of a thick calculus textbook with a blue and white cover. The book looks pristine. Product photography style, white background, soft drop shadow, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATXzj_io34t4FgtcmrN7y-yEIPfdfD0MqJiuqhrfhKEtqc_8tSQCH5THtaXkxVmXxX_zVkVi-icf85EaVorYXaYJdq-8D1JzIajdvXDJcsK2qVJ-vPc9aY1YLTWqddcTzc1ZVwqoLkbQpI1gx5jrGr8RMq1u5r6xI-14uwr4gyS8hKWFS-_q2saTloBWKSnf5bF4F067gsgIivA_OBXKRY6bLazYTHrIDBO_SRrhI8yuawCySCBSG5BjAHA339PwgYmaDegnTqiwg"/>
+</div>
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Item for Sale</p>
+<h3 class="font-headline-md text-body-md font-bold">Introduction to Calculus, 10th Ed.</h3>
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">$45.00</span>
+<span class="text-[12px] bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-0.5 rounded font-bold">Great Deal</span>
+</div>
+</div>
+</div>
+<button class="w-full md:w-auto bg-primary text-white px-stack-lg py-3 rounded-xl font-bold hover:scale-105 active:scale-95 transition-all shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">handshake</span>
+                        Confirm Transaction
+                    </button>
+</div>
+</div>
+<!-- Interaction Bar (Bottom) -->
+<footer class="p-stack-md border-t border-outline-variant bg-white">
+<div class="flex flex-wrap gap-2 mb-3">
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface-variant px-3 py-1.5 rounded-full text-label-sm font-label-sm transition-colors border border-outline-variant/20">Is this available?</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface-variant px-3 py-1.5 rounded-full text-label-sm font-label-sm transition-colors border border-outline-variant/20">Where can we meet?</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface-variant px-3 py-1.5 rounded-full text-label-sm font-label-sm transition-colors border border-outline-variant/20">What's the condition?</button>
+<button class="bg-primary-container/10 hover:bg-primary-container/20 text-primary px-3 py-1.5 rounded-full text-label-sm font-label-sm transition-colors border border-primary/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">map</span> Suggest Meetup Spot
+                    </button>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full transition-colors">add_circle</button>
+<div class="flex-1 relative">
+<input class="w-full pl-4 pr-12 py-3 bg-surface-container-low border-none rounded-2xl focus:ring-2 focus:ring-primary text-body-md" placeholder="Type a message..." type="text"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-primary material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</button>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full transition-colors">sentiment_satisfied</button>
+</div>
+</footer>
+</main>
+<!-- Right Detail Panel (Item/User Info) -->
+<aside class="hidden xl:flex flex-col w-72 bg-surface-bright border-l border-outline-variant overflow-y-auto custom-scrollbar">
+<div class="p-stack-md">
+<h3 class="font-headline-md text-label-md mb-stack-md uppercase tracking-widest text-on-surface-variant opacity-70">Seller Details</h3>
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-outline-variant mb-stack-lg">
+<div class="flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full overflow-hidden mb-3 border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="High resolution portrait of Alex Rivera. Professional headshot quality. Bright, optimistic lighting. The user has a clean-cut appearance suitable for a university environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-5XnK22ogdrYZBkzJ5w-yPneVHseqLQ4d5jjBbT5GKErFEnFUk10_bPfdpv1Vtn7X5UgaaQUtKSaePOJvlpviP49U6sV6Xdx_XY3TaKUbx0DHRc6bfekwEGg8CsTJpb2lp33NUmijf0e5sKHVDG2olpale8gB8W4VfApjlzKTfRMhwII3vHqZGQHN4tN8_09smkMIr_9ZOc64UNiYPBS0SdwI1rzArQkNgUIUa2Y17Z-qJ_0IC1tL2vOduxlowip64dKW-mfrdm4"/>
+</div>
+<h4 class="font-bold text-body-lg">Alex Rivera</h4>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-2">Senior, Business Admin</p>
+<div class="flex items-center gap-1 text-secondary font-bold text-label-md">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                            4.9 (42 reviews)
+                        </div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant flex flex-col gap-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">school</span>
+<span class="text-label-sm font-label-sm">State University Verified</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<span class="text-label-sm font-label-sm">Safe Seller Badge</span>
+</div>
+</div>
+</div>
+<h3 class="font-headline-md text-label-md mb-stack-md uppercase tracking-widest text-on-surface-variant opacity-70">Shared Files</h3>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 p-2 hover:bg-surface-container rounded-xl cursor-pointer transition-colors border border-transparent hover:border-outline-variant/30">
+<div class="bg-primary-container/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">image</span>
+</div>
+<div class="min-w-0">
+<p class="text-label-md font-label-md truncate">book_front.jpg</p>
+<p class="text-[10px] text-on-surface-variant">1.2 MB • Oct 24</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-2 hover:bg-surface-container rounded-xl cursor-pointer transition-colors border border-transparent hover:border-outline-variant/30">
+<div class="bg-primary-container/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">image</span>
+</div>
+<div class="min-w-0">
+<p class="text-label-md font-label-md truncate">book_spine.jpg</p>
+<p class="text-[10px] text-on-surface-variant">0.8 MB • Oct 24</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 lg:hidden bg-surface shadow-lg rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-label-sm font-label-sm">Feed</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">search</span>
+<span class="text-label-sm font-label-sm">Search</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-95 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="text-label-sm font-label-sm">Chat</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="text-label-sm font-label-sm">Sell</span>
+</div>
+</nav>
+<script>
+        // Micro-interactions for chat
+        const confirmBtn = document.querySelector('button:contains("Confirm Transaction")');
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', () => {
+                confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Processing...';
+                confirmBtn.classList.remove('bg-primary');
+                confirmBtn.classList.add('bg-secondary');
+                setTimeout(() => {
+                    confirmBtn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Confirmed';
+                }, 1500);
+            });
+        }
+
+        // Search bar interaction
+        const searchInput = document.querySelector('aside input');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-105');
+            searchInput.parentElement.classList.add('transition-transform');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-105');
+        });
+    </script>
+</body></html>
